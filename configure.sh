@@ -23,6 +23,7 @@ git config --global difftool.vimdiff3.path nvim
 git config --global merge.tool vimdiff3
 git config --global mergetool.vimdiff3.path nvim
 git config --global difftool.prompt false
+git config --global core.editor nvim
 
 # install packer.nvim if needed
 DIRECTORY="$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim" 
