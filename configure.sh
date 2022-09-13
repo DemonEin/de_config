@@ -33,6 +33,7 @@ else
     git clone --depth 1 https://github.com/wbthomason/packer.nvim $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim 
 fi
 
+rm -r ~/.config/nvim
 cp -R $SCRIPT_DIR/nvim ~/.config/
 
-nvim +PackerSync +q
+nvim +PackerSync
