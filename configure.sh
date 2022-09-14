@@ -17,6 +17,8 @@ else
     echo ".bashrc already sources .de_bashrc - skipping"
 fi
 
+source ~/.bashrc
+
 # copied from a question on Reddit, could be improved?
 git config --global diff.tool vimdiff3
 git config --global difftool.vimdiff3.path nvim
