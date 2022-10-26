@@ -27,6 +27,8 @@ vim.opt.expandtab = true
 
 -- TODO look at 'columns' option
 
+vim.opt.grepprg = "rg -n"
+
 vim.g.mapleader = " "
 local map = vim.api.nvim_set_keymap
 map('n', '<C-p>', ':Telescope find_files<cr>', {noremap = true})  
