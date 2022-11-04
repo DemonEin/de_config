@@ -33,6 +33,14 @@ vim.g.mapleader = " "
 local map = vim.api.nvim_set_keymap
 map('n', '<C-p>', ':Telescope find_files<cr>', {noremap = true})  
 
+-- make all marks global marks (and the same capital and lowercase)
+for uppercase_ascii=65,90 do
+    char_uppercase = string.char(uppercase_ascii)
+    char_lowercase = string.char(uppercase_ascii + 32)
+    map('n', 'm' .. char_lowercase, 'm' .. char_uppercase, {noremap = true})
+    map('n', '\'' .. char_lowercase, '\'' .. char_uppercase, {noremap = true})
+end
+
 -- copied from https://stackoverflow.com/questions/63906439/how-to-disable-line-numbers-in-neovim-terminal
 -- autocommands
 --- This function is taken from https://github.com/norcalli/nvim_utils
