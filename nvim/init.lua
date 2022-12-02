@@ -14,6 +14,8 @@ vim.opt.number = true
 vim.opt.autowrite = true
 vim.opt.autowriteall = true
 
+vim.cmd('set clipboard+=unnamedplus')
+
 -- keep cursor centered 
 vim.opt.scrolloff = 9999
 
