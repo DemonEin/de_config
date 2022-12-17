@@ -3,3 +3,7 @@ export XDG_CONFIG_HOME=~/.config
 export PATH="~/.local/bin:$PATH"
 
 alias vim="nvim"
+alias v="nvim"
+alias t="nvim ."
+alias s="nvim \"+'0\""
+
