@@ -13,7 +13,7 @@ expression_regex = re.compile(r'DEMACRO\s*(.*)')
 
 def evaluate_expression(expression):
     arguments = shlex.split(expression)
-    file = arguments[0]
+    file = os.environ['DEMACRO_DIR'] + '/' + arguments[0]
     with open(file, 'r') as file:
         # print(file.read(), file=sys.stderr)
         return file.read().format(*arguments[1:])
