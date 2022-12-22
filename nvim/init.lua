@@ -27,6 +27,8 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+vim.opt.foldlevel = 9999
+
 -- TODO look at 'columns' option
 
 vim.opt.grepprg = "rg -n"
