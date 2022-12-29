@@ -4,7 +4,7 @@ export PATH="~/.local/bin:$PATH"
 
 alias vim="nvim"
 alias v="nvim"
-alias t="nvim ."
+alias t="nvim . \"+:Telescope find_files\""
 alias s="nvim \"+'0\""
 alias colemak="xmodmap ~/de_config/colemak"
 alias cmk="colemak"
