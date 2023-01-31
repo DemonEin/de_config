@@ -29,6 +29,8 @@ vim.opt.expandtab = true
 
 vim.opt.foldlevel = 9999
 
+vim.opt.updatetime = 100
+
 -- TODO look at 'columns' option
 
 vim.opt.grepprg = "rg -n"
