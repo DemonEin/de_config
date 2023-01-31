@@ -64,9 +64,8 @@ end
 
 local autocmds = {
     terminal_job = {
-        -- consider these
-        -- { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] };
-        -- { "TermOpen", "*", "startinsert" };
+        { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] };
+        { "TermOpen", "*", "startinsert" };
         { "TermOpen", "*", "setlocal listchars= nonumber norelativenumber" };
     };
 }
