@@ -5,7 +5,9 @@ export PATH="~/.local/bin:$PATH"
 alias vim="nvim"
 alias v="nvim"
 alias t="nvim . \"+:Telescope find_files\""
-alias s="nvim \"+'0\""
+# I don't know why alias s="nvim \"+'0\"" doesn't work on WSL,
+# it does on normal ubuntu
+alias s="nvim \"+:norm'0\""
 alias colemak="xmodmap ~/de_config/colemak"
 alias cmk="colemak"
 alias qwerty="setxkbmap us"
