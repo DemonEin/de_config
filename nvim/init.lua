@@ -58,6 +58,10 @@ vim.opt.grepprg = "rg -n"
 vim.g.mapleader = " "
 local map = vim.api.nvim_set_keymap
 map('n', '<C-p>', ':Telescope find_files<cr>', {noremap = true})  
+map('n', '<Leader>s', ':grep <C-r><C-w><cr>', {noremap = true})
+map('n', '<Leader>i', ':grep -i <C-r><C-w><cr>', {noremap = true})
+map('n', '<C-n>', ':cn<cr>', {noremap = true})
+map('n', '<C-e>', ':cp<cr>', {noremap = true})
 
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
