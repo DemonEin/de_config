@@ -62,6 +62,7 @@ map('n', '<Leader>s', ':grep <C-r><C-w><cr>', {noremap = true})
 map('n', '<Leader>i', ':grep -i <C-r><C-w><cr>', {noremap = true})
 map('n', '<C-n>', ':cn<cr>', {noremap = true})
 map('n', '<C-e>', ':cp<cr>', {noremap = true})
+map('n', '<Leader>g', ':te git ', {noremap = true})
 
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
