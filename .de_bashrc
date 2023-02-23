@@ -2,6 +2,8 @@ export XDG_CONFIG_HOME=~/.config
 . "$HOME/.cargo/env"
 export PATH="~/.local/bin:$PATH"
 
+shopt -s globstar
+
 alias vim="nvim"
 alias v="nvim"
 alias t="nvim . \"+:Telescope find_files\""
