@@ -14,3 +14,71 @@ alias colemak="xmodmap ~/de_config/colemak"
 alias cmk="colemak"
 alias qwerty="setxkbmap us"
 
+TASK_DIR="$HOME/tasks"
+
+# if in tmux session
+if [ -n "$TMUX" ]; then
+    # taken from https://superuser.com/questions/410017/how-do-i-know-current-tmux-session-name-by-running-tmux-command
+    export task=$( tmux display-message -p '#S' )
+fi
+
+switchtask() {
+    if [ -n "$TMUX" ]; then
+        if ! tmux has-session -t $1; then
+            tmux new-session -d -s $1
+        fi
+        tmux switch-client -t $1
+    else
+        tmux new-session -A -s $1
+    fi
+}
+
+alias st=switchtask
+
+# notes
+alias nt="nvim $TASK_DIR/$task/notes.txt"
+
+# repo in $1
+task_worktree() {
+    if ! [[ -d "$1/$task" ]]; then
+        git -C $1 worktree add $task
+    fi
+   cd "$1/$task"
+}
+
+alias progress="nvim $TASK_DIR/$task/daily_progress.txt"
+
+# $1 is "daily | weekly"
+progresscompile() {
+    printf "compiled on $(date)\n\n"
+
+    for file in $(find -name $1_progress.txt); do
+        # TODO this needs to be changed
+        echo "$(basename $file):"
+        cat $file
+        echo ""
+    done
+
+    # rm $PROGRESS_DIR/$1/*
+}
+
+# $1 is "daily" | "weekly"
+progressreset() {
+   rm $(find $TASK_DIR -name $1_progress.txt)
+}
+
+progressmove() {
+    for task_dir in $TASK_DIR/*; do
+        daily_progress=$task_dir/daily_progress.txt
+        if [ -a $daily_progress ]; then
+            weekly_progress=$task_dir/weekly_progress.txt
+            if ! [ -a $weekly_progress ]; then
+                printf "$(basename $task_dir) weekly status begun at $(date)\n\n" >> $weekly_progress
+            fi
+            cat $daily_progress >> $weekly_progress
+            nvim $weekly_progress
+        fi
+    done
+
+    progressreset daily
+}
