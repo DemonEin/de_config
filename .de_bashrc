@@ -23,6 +23,11 @@ if [ -n "$TMUX" ]; then
 fi
 
 switchtask() {
+    if ! [[ -n $( cut $TASK_DIR/list.txt -d' ' -f1 | rg $1 ) ]]; then
+        echo "no such task in the list"
+        return
+    fi
+
     if [ -n "$TMUX" ]; then
         if ! tmux has-session -t $1; then
             tmux new-session -d -s $1
@@ -81,4 +86,20 @@ progressmove() {
     done
 
     progressreset daily
+}
+
+addtask() {
+    echo "$1 open" >> $TASK_DIR/list.txt
+}
+
+nexttask() {
+    rg -i -v blocked $TASK_DIR/list.txt | head -n 1 | cut -d' ' -f1
+}
+
+block () {
+    sed -i "/$1/s/open/blocked/" $TASK_DIR/list.txt
+}
+
+unblock () {
+    sed -i "/$1/s/blocked/open/" $TASK_DIR/list.txt
 }
