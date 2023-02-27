@@ -39,6 +39,8 @@ vim.cmd('set clipboard+=unnamedplus')
 -- keep cursor centered 
 vim.opt.scrolloff = 9999
 
+vim.opt.cmdheight = 0
+
 vim.opt.hlsearch = false
 -- vim.opt.colorcolumn = '80'
 
