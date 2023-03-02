@@ -90,6 +90,7 @@ progressmove() {
 
 addtask() {
     echo "$1 open" >> $TASK_DIR/list.txt
+    mkdir $TASK_DIR/$1
 }
 
 nexttask() {
