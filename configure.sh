@@ -19,11 +19,8 @@ fi
 
 source ~/.bashrc
 
-# copied from a question on Reddit, could be improved?
-git config --global diff.tool vimdiff3
-git config --global difftool.vimdiff3.path nvim
-git config --global merge.tool vimdiff3
-git config --global mergetool.vimdiff3.path nvim
+git config --global diff.tool nvimdiff
+git config --global merge.tool nvimdiff
 git config --global difftool.prompt false
 git config --global core.editor nvim
 git config --global submodule.recurse true
