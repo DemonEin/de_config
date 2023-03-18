@@ -69,6 +69,8 @@ map('n', '<C-n>', ':cn<cr><cr>', {noremap = true})
 map('n', '<C-e>', ':cp<cr><cr>', {noremap = true})
 map('n', '<Leader>g', ':te git ', {noremap = true})
 
+map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
+
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
     char_uppercase = string.char(uppercase_ascii)
