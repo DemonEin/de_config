@@ -39,6 +39,8 @@ vim.cmd('set clipboard+=unnamedplus')
 -- keep cursor centered 
 vim.opt.scrolloff = 9999
 
+-- if removing, search for 'cmdheight' to see things that relate
+-- and might have to be changed
 vim.opt.cmdheight = 0
 
 vim.opt.hlsearch = false
@@ -62,8 +64,9 @@ local map = vim.api.nvim_set_keymap
 map('n', '<C-p>', ':Telescope find_files<cr>', {noremap = true})  
 map('n', '<Leader>s', ':grep <C-r><C-w><cr>', {noremap = true})
 map('n', '<Leader>i', ':grep -i <C-r><C-w><cr>', {noremap = true})
-map('n', '<C-n>', ':cn<cr>', {noremap = true})
-map('n', '<C-e>', ':cp<cr>', {noremap = true})
+-- double cr needed because of cmdheight
+map('n', '<C-n>', ':cn<cr><cr>', {noremap = true})
+map('n', '<C-e>', ':cp<cr><cr>', {noremap = true})
 map('n', '<Leader>g', ':te git ', {noremap = true})
 
 -- make all marks global marks (and the same capital and lowercase)
