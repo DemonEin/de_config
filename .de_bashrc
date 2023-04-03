@@ -13,6 +13,7 @@ alias s="nvim \"+:norm'0\""
 alias colemak="xmodmap ~/de_config/colemak"
 alias cmk="colemak"
 alias qwerty="setxkbmap us"
+alias clip="xclip -selection c"
 
 TASK_DIR="$HOME/tasks"
 
