@@ -39,6 +39,8 @@ vim.cmd('set clipboard+=unnamedplus')
 -- keep cursor centered 
 vim.opt.scrolloff = 9999
 
+vim.opt.wrap = false
+
 -- if removing, search for 'cmdheight' to see things that relate
 -- and might have to be changed
 vim.opt.cmdheight = 0
