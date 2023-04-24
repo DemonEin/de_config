@@ -57,6 +57,8 @@ vim.opt.foldlevel = 9999
 
 vim.opt.updatetime = 100
 
+vim.o.splitright = true
+
 -- TODO look at 'columns' option
 
 vim.opt.grepprg = "rg -n"
@@ -73,6 +75,9 @@ map('n', '<C-e>', ':cp<cr><cr>', {noremap = true})
 map('n', '<Leader>g', ':te git ', {noremap = true})
 
 map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
+
+vim.keymap.set('n', '<Leader>t', ':vs +te\\ .\\ t.sh<cr>', {noremap = true})
+vim.keymap.set('n', '<Leader>e', ':vs t.sh<cr>', {noremap = true})
 
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
