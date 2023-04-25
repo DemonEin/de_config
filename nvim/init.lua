@@ -76,7 +76,21 @@ map('n', '<Leader>g', ':te git ', {noremap = true})
 
 map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
 
-vim.keymap.set('n', '<Leader>t', ':vs +te\\ .\\ t.sh<cr>', {noremap = true})
+function run_tsh()
+    terminal_command = 'te de; . t.sh'
+
+    tsh_window_number = vim.fn.bufwinnr('t.sh')
+    if tsh_window_number ~= -1 then
+        print(tsh_window_number)
+        vim.cmd(tsh_window_number .. ' winc w')
+        vim.cmd('w')
+        vim.cmd(terminal_command)
+    else
+        vim.cmd('vs +' .. string.gsub(terminal_command, ' ', '\\ '))
+    end
+end
+
+vim.keymap.set('n', '<Leader>t', run_tsh, {noremap = true})
 vim.keymap.set('n', '<Leader>e', ':vs t.sh<cr>', {noremap = true})
 
 -- make all marks global marks (and the same capital and lowercase)
