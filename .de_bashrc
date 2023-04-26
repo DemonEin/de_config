@@ -3,6 +3,9 @@ export XDG_CONFIG_HOME=~/.config
 export PATH="~/.local/bin:$PATH"
 
 shopt -s globstar
+# I don't fully understand how the escapes in the echo command work
+# TODO see if this takes a long time to execute
+PS1='\e[34m\w\e[0m$( if branch=$(git branch --show-current 2> /dev/null); then echo '::\\e[32m'$branch'\\e[0m'; fi )\$ '
 
 alias vim="nvim"
 alias v="nvim"
