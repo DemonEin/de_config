@@ -77,13 +77,13 @@ map('n', '<Leader>g', ':te git ', {noremap = true})
 map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
 
 function run_tsh()
-    terminal_command = 'te de; . t.sh'
+    terminal_command = 'te de; shopt -s expand_aliases; . t.sh'
+
+    vim.cmd('w')
 
     tsh_window_number = vim.fn.bufwinnr('t.sh')
     if tsh_window_number ~= -1 then
-        print(tsh_window_number)
         vim.cmd(tsh_window_number .. ' winc w')
-        vim.cmd('w')
         vim.cmd(terminal_command)
     else
         vim.cmd('vs +' .. string.gsub(terminal_command, ' ', '\\ '))
