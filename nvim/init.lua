@@ -2,7 +2,9 @@ require("plugins")
 
 vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 
-require("catppuccin").setup()
+require("catppuccin").setup({
+    transparent_background = true
+})
 
 require'lspconfig'.rust_analyzer.setup{}
 require('lsp-config')
