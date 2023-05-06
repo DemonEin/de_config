@@ -1,5 +1,4 @@
 export XDG_CONFIG_HOME=~/.config 
-. "$HOME/.cargo/env"
 export PATH="~/.local/bin:$PATH"
 
 shopt -s globstar
