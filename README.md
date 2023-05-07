@@ -8,7 +8,7 @@ Here is my personal configuration for my system.
 
 # Install
 
-WARNING: this will overwite any current nvim config you have
+WARNING: this will delete any nvim config you have in ~/.config/nvim
 
 Make sure you have nvim and git on your $PATH. Simply run
 ```
