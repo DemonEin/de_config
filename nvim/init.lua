@@ -65,7 +65,12 @@ vim.o.splitright = true
 
 vim.opt.grepprg = "rg -n"
 
-vim.diagnostic.config({ signs = false })
+vim.diagnostic.config({
+    virtual_text = {
+        severity = { min = vim.diagnostic.severity.INFO },
+    },
+    signs = false,
+})
 
 vim.g.mapleader = " "
 local map = vim.api.nvim_set_keymap
