@@ -34,6 +34,6 @@ else
 fi
 
 rm -r ~/.config/nvim
-cp -R $SCRIPT_DIR/nvim ~/.config/
+ln -s $SCRIPT_DIR/nvim ~/.config/nvim
 
 nvim +PackerSync
