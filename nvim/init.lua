@@ -73,9 +73,8 @@ map('n', '<C-p>', ':Telescope find_files<cr>', {noremap = true})
 -- stacking escape sequences smh
 map('n', '<Leader>s', ':grep \\\\b<C-r><C-w>\\\\b<cr>', {noremap = true})
 map('n', '<Leader>i', ':grep -i \\\\b<C-r><C-w>\\\\b<cr>', {noremap = true})
--- double cr needed because of cmdheight
-map('n', '<C-n>', ':cn<cr><cr>', {noremap = true})
-map('n', '<C-e>', ':cp<cr><cr>', {noremap = true})
+map('n', '<C-n>', ':silent cn<cr>', {noremap = true})
+map('n', '<C-e>', ':silent cp<cr>', {noremap = true})
 map('n', '<Leader>g', ':te git ', {noremap = true})
 
 map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
