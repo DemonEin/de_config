@@ -65,6 +65,8 @@ vim.o.splitright = true
 
 vim.opt.grepprg = "rg -n"
 
+vim.diagnostic.config({ signs = false })
+
 vim.g.mapleader = " "
 local map = vim.api.nvim_set_keymap
 map('n', '<C-p>', ':Telescope find_files<cr>', {noremap = true})  
