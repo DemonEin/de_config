@@ -99,7 +99,7 @@ function run_tsh()
 end
 
 vim.keymap.set('n', '<Leader>t', run_tsh, {noremap = true})
-vim.keymap.set('n', '<Leader>i', ':vs t.sh<cr>', {noremap = true})
+vim.keymap.set('n', '<Leader>n', ':vs t.sh<cr>', {noremap = true})
 
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
