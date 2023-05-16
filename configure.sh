@@ -35,5 +35,7 @@ fi
 
 rm -r ~/.config/nvim
 ln -s $SCRIPT_DIR/nvim ~/.config/nvim
+rm -r ~/.config/i3
+ln -s $SCRIPT_DIR/i3 ~/.config/i3
 
 nvim +PackerSync
