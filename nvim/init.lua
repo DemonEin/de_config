@@ -80,7 +80,8 @@ map('n', '<Leader>s', ':grep \\\\b<C-r><C-w>\\\\b<cr>', {noremap = true})
 map('n', '<Leader>i', ':grep -i \\\\b<C-r><C-w>\\\\b<cr>', {noremap = true})
 map('n', '<C-n>', ':silent cn<cr>', {noremap = true})
 map('n', '<C-e>', ':silent cp<cr>', {noremap = true})
-map('n', '<Leader>g', ':te git ', {noremap = true})
+map('n', '<Leader>g', ':Git ', {noremap = true})
+map('n', '<Leader>b', ':Git blame<cr>', {noremap = true})
 
 map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
 

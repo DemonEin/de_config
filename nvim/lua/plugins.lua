@@ -17,4 +17,6 @@ return require('packer').startup(function(use)
   use 'neovim/nvim-lspconfig' -- Configurations for Nvim LSP
 
   use 'airblade/vim-gitgutter'
+
+  use 'tpope/vim-fugitive'
 end)
