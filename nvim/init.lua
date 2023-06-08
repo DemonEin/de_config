@@ -84,6 +84,9 @@ map('n', '<Leader>g', ':te git ', {noremap = true})
 
 map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
 
+map('n', '[c', ':silent GitGutterPrevHunk<cr>', {noremap = true})
+map('n', ']c', ':silent GitGutterNextHunk<cr>', {noremap = true})
+
 function run_tsh()
     terminal_command = 'te de; shopt -s expand_aliases; . t.sh'
 
