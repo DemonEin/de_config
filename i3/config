@@ -12,6 +12,8 @@ gaps inner 20
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+for_window [urgent="latest"] focus
+
 exec alacritty
 exec google-chrome-stable
 
