@@ -14,6 +14,10 @@ export -f de
 alias vim="nvim"
 alias v="nvim"
 alias t="nvim . \"+:Telescope find_files\""
+alias g="git"
+alias wip="git commit -a -m wip"
+# I could make this check whether the previous commit has the message "wip"
+alias uwip="git reset HEAD~"
 # I don't know why alias s="nvim \"+'0\"" doesn't work on WSL,
 # it does on normal ubuntu
 alias s="nvim \"+:norm'0\""
