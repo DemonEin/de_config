@@ -19,4 +19,6 @@ return require('packer').startup(function(use)
   use 'airblade/vim-gitgutter'
 
   use 'tpope/vim-fugitive'
+
+  use 'entrez/roku.vim'
 end)
