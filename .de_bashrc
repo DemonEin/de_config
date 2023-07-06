@@ -34,6 +34,13 @@ if [ -n "$TMUX" ]; then
     export task=$( tmux display-message -p '#S' )
 fi
 
+endat() {
+    input=
+    while [ "$input" != "$1" ]; do
+        read -s -n ${#1} input
+    done
+}
+
 switchtask() {
     if ! [[ -n $( cut $TASK_DIR/list.txt -d' ' -f1 | rg $1 ) ]]; then
         echo "no such task in the list"
