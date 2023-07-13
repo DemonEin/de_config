@@ -25,6 +25,7 @@ alias colemak="xmodmap ~/de_config/colemak"
 alias cmk="colemak"
 alias qwerty="setxkbmap us"
 alias clip="xclip -selection c"
+alias update="$HOME/de_config/update.sh"
 
 TASK_DIR="$HOME/tasks"
 
