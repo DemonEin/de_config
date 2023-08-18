@@ -13,6 +13,7 @@ export -f de
 
 alias vim="nvim"
 alias v="nvim"
+# TODO change
 alias t="nvim . \"+:Telescope find_files\""
 alias g="git"
 alias wip="git commit -a -m wip"
@@ -20,7 +21,7 @@ alias wip="git commit -a -m wip"
 alias uwip="git reset HEAD~"
 # I don't know why alias s="nvim \"+'0\"" doesn't work on WSL,
 # it does on normal ubuntu
-alias s="nvim \"+:norm'0\""
+alias s="if jobs nvim &> /dev/null; then fg nvim; else nvim \"+:norm'0\"; fi"
 alias colemak="xmodmap ~/de_config/colemak"
 alias cmk="colemak"
 alias qwerty="setxkbmap us"
