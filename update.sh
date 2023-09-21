@@ -1,6 +1,8 @@
 #!/bin/bash
 
-if command -v pacman; then
+if command -v yay; then
+    yay --answerclean None --removemake
+elif command -v pacman; then
     sudo pacman -Syu
     # TODO remove results of pacman -Qte
 fi
