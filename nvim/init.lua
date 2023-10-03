@@ -92,11 +92,11 @@ map('n', ']c', ':silent GitGutterNextHunk<cr>', {noremap = true})
 function run_tsh()
     terminal_command = 'te de; shopt -s expand_aliases; . t.sh'
 
-    vim.cmd('w')
+    vim.cmd('wa')
 
     tsh_window_number = vim.fn.bufwinnr('t.sh')
     if tsh_window_number ~= -1 then
-        vim.cmd(tsh_window_number .. ' winc w')
+        vim.cmd('norm ' .. tsh_window_number .. ' <C-W><C-W>')
         vim.cmd(terminal_command)
     else
         vim.cmd('vs +' .. string.gsub(terminal_command, ' ', '\\ '))
