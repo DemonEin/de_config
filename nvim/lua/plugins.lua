@@ -20,5 +20,7 @@ return require('packer').startup(function(use)
 
   use 'tpope/vim-fugitive'
 
-  use 'entrez/roku.vim'
+  -- use 'entrez/roku.vim'
+
+  use 'nvim-treesitter/nvim-treesitter'
 end)
