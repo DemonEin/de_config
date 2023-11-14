@@ -67,6 +67,8 @@
 
 (number_literal) @number
 
+(comment) @comment
+
 (function_declaration
     . (identifier) @function
 )
