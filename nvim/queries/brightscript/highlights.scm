@@ -5,6 +5,7 @@
   "sub"
   "function"
   "end"
+  "endif"
   "stop"
   "goto"
   "return"
