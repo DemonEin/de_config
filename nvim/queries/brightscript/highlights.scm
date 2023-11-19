@@ -77,5 +77,5 @@
 )
 
 (function_call_expression
-    . (identifier) @function
+    (identifier) @function .
 )
