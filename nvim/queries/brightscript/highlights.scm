@@ -72,6 +72,8 @@
 
 (boolean_literal) @boolean
 
+(invalid_literal) @constant.builtin
+
 (comment) @comment
 
 (function_declaration
