@@ -121,3 +121,25 @@
     (identifier) @constant
 )
 
+(const_if_block
+    [
+        "#if"
+        "#else"
+        "#end"
+        "if"
+    ] @define
+)
+
+(const_else_block
+    [
+        "#else"
+    ] @define
+)
+
+(const_else_if_block
+    [
+        "#else"
+        "if"
+    ] @define
+)
+
