@@ -76,6 +76,39 @@
     . (identifier) @function
 )
 
-(function_call_expression
-    (identifier) @function .
+(binary_operator_expression
+    "."
+    .
+    (identifier) @field
 )
+
+(place_dot_expression
+    "."
+    .
+    (identifier) @field
+)
+
+(function_call_expression
+    .
+    (identifier) @function
+)
+ 
+(function_call_expression [
+    (binary_operator_expression
+        "."
+        .
+        (identifier) @method
+    )
+    (place_dot_expression
+        "."
+        .
+        (identifier) @method
+    )
+])
+
+(associative_array_literal_entry
+    (identifier) @field
+    .
+    ":"
+)
+
