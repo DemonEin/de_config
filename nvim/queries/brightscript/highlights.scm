@@ -112,3 +112,8 @@
     ":"
 )
 
+(const_item
+    "#const" @define
+    (identifier) @constant
+)
+
