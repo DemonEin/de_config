@@ -70,6 +70,8 @@
 
 (number_literal) @number
 
+(boolean_literal) @boolean
+
 (comment) @comment
 
 (function_declaration
