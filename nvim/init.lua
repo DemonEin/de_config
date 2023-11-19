@@ -8,7 +8,6 @@ require("catppuccin").setup({
             Type = { fg = colors.blue },
             Function = { fg = colors.yellow },
             Character = { fg = colors.teal },
-            ['@parameter'] = { fg = colors.text },
         }
     end,
 
@@ -56,6 +55,7 @@ vim.opt.number = true
 link_highlights = {
     ['@function.builtin'] = '@function',
     ['@variable.builtin'] = '@variable',
+    ['@parameter'] = '@variable',
     ['@type.builtin'] = '@type',
     ['StorageClass'] = 'Type',
     ['Structure'] = 'Type',
