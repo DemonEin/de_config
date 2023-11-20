@@ -4,6 +4,8 @@
   "then"
   "sub"
   "function"
+  "endsub"
+  "endfunction"
   "end"
   "endif"
   "stop"
