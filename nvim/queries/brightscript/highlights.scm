@@ -60,6 +60,7 @@
   ">="
   "and"
   "or"
+  "not"
   "++"
   "--"
 ] @operator
