@@ -24,6 +24,7 @@ git config --global merge.tool nvimdiff
 git config --global difftool.prompt false
 git config --global core.editor nvim
 git config --global submodule.recurse true
+git config --global push.autoSetupRemote true
 
 # install packer.nvim if needed
 DIRECTORY="$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim" 
