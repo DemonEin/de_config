@@ -1,4 +1,5 @@
-opacity = 1.0
+# alacritty complained when I had this in
+# opacity = 1.0
 
 [[colors.indexed_colors]]
 color = "#FAB387"
@@ -60,9 +61,10 @@ foreground = "#CDD6F4"
 background = "#A6E3A1"
 foreground = "#1E1E2E"
 
-[colors.search.footer_bar]
-background = "#A6ADC8"
-foreground = "#1E1E2E"
+# alacriity complained when I had this in
+# [colors.search.footer_bar]
+# background = "#A6ADC8"
+# foreground = "#1E1E2E"
 
 [colors.search.matches]
 background = "#A6ADC8"
