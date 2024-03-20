@@ -135,6 +135,7 @@ map('n', '<C-e>', ':silent cp<cr>', {noremap = true})
 map('n', '<Leader>g', ':Git ', {noremap = true})
 map('n', '<Leader>b', ':Git blame<cr>', {noremap = true})
 map('n', '<Leader>h', ':vert h ', {noremap = true})
+map('n', '<Leader>z', 'ZZ', {noremap = true})
 
 map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
 
