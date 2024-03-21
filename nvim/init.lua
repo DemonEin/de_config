@@ -135,7 +135,14 @@ map('n', '<C-e>', ':silent cp<cr>', {noremap = true})
 map('n', '<Leader>g', ':Git ', {noremap = true})
 map('n', '<Leader>b', ':Git blame<cr>', {noremap = true})
 map('n', '<Leader>h', ':vert h ', {noremap = true})
-map('n', '<Leader>z', 'ZZ', {noremap = true})
+
+function quit_unless_last_window()
+    if (#vim.api.nvim_tabpage_list_wins(0)) > 1 then
+        vim.cmd('q')
+    end
+end
+
+vim.keymap.set('n', '<Leader>z', quit_unless_last_window, {noremap = true})
 
 map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
 
