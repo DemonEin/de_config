@@ -16,7 +16,7 @@ for_window [urgent="latest"] focus
 
 exec alacritty
 exec google-chrome-stable
-exec alacritty --class \"Alacritty nvim\" -e nvim .
+exec alacritty --class "Alacritty nvim" -e nvim .
 
 assign [class="(?i)chrome"] 2
 assign [class="Alacritty nvim"] 4
