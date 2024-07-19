@@ -39,6 +39,9 @@ local lsp_flags = {
 require('lspconfig')['pyright'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
+    root_dir = function()
+        return vim.fs.dirname(vim.fs.find({'pyrightconfig.json', 'pyproject.toml', 'setup.py'}, { upward = true })[1])
+    end,
 }
 require('lspconfig')['tsserver'].setup{
     on_attach = on_attach,
