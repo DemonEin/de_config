@@ -117,6 +117,8 @@ vim.o.splitright = true
 
 vim.opt.grepprg = "rg -n"
 
+vim.opt.fillchars = "diff: "
+
 vim.diagnostic.config({
     virtual_text = {
         severity = { min = vim.diagnostic.severity.INFO },
