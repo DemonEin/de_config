@@ -189,6 +189,9 @@ map('n', '<C-e>', ':silent cp<cr>', {noremap = true})
 map('n', '<Leader>g', ':Git ', {noremap = true})
 map('n', '<Leader>b', ':Git blame<cr>', {noremap = true})
 map('n', '<Leader>h', ':vert h ', {noremap = true})
+vim.keymap.set('n', '<Leader>v', function()
+    require('gitsigns').toggle_deleted()
+end, {noremap = true})
 
 function quit_unless_last_window()
     if (#vim.api.nvim_tabpage_list_wins(0)) > 1 then
