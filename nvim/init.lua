@@ -17,6 +17,8 @@ require("catppuccin").setup({
 })
 
 require('gitsigns').setup{
+    signcolumn = false,
+    numhl = true,
     show_deleted = true,
 
     -- copied from gitsigns readme
