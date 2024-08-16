@@ -27,6 +27,7 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
   spec = {
     { "nvim-lua/plenary.nvim" },
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
     { "catppuccin/nvim", name = "catppuccin" },
     { "neovim/nvim-lspconfig" },

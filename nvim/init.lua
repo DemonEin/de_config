@@ -16,6 +16,8 @@ require("catppuccin").setup({
     },
 })
 
+require('telescope').load_extension('fzf')
+
 require('gitsigns').setup{
     signcolumn = false,
     numhl = true,
