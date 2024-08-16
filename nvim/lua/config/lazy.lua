@@ -26,7 +26,6 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    { "junegunn/fzf" },
     { "nvim-lua/plenary.nvim" },
     { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
     { "catppuccin/nvim", name = "catppuccin" },
