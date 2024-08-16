@@ -1,4 +1,4 @@
-require("plugins")
+require("config.lazy")
 
 vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 
