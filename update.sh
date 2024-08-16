@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if command -v yay; then
-    yay --answerclean None --removemake
+    yay --answerclean None --removemake --answerdiff None
 elif command -v pacman; then
     sudo pacman -Syu
     # TODO remove results of pacman -Qte
