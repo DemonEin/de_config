@@ -13,10 +13,6 @@ if command -v apt; then
     sudo apt autoremove
 fi
 
-if command -v nvim; then
-     nvim -c 'au User PackerComplete qa' -c 'PackerSync'
-fi
-
 if command -v rustup; then
     rustup update
 fi
