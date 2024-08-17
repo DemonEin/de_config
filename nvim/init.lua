@@ -70,7 +70,6 @@ require('gitsigns').setup{
       end
 }
 
-require'lspconfig'.rust_analyzer.setup{}
 require('lsp-config')
 
 require'nvim-treesitter.configs'.setup {
