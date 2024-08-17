@@ -26,14 +26,6 @@ git config --global core.editor nvim
 git config --global submodule.recurse true
 git config --global push.autoSetupRemote true
 
-# install packer.nvim if needed
-DIRECTORY="$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim" 
-if [ -d "$DIRECTORY" ]; then
-    echo "packer already installed, skipping"
-else
-    git clone --depth 1 https://github.com/wbthomason/packer.nvim $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim 
-fi
-
 rm -r ~/.config/nvim
 ln -s $SCRIPT_DIR/nvim ~/.config/nvim
 rm -r ~/.config/i3
