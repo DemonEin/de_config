@@ -170,6 +170,8 @@ vim.opt.grepprg = "rg -n"
 
 vim.opt.fillchars = "diff: "
 
+vim.o.tildeop = true
+
 vim.diagnostic.config({
     virtual_text = {
         severity = { min = vim.diagnostic.severity.INFO },
