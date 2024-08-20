@@ -166,8 +166,6 @@ vim.o.splitright = true
 
 -- TODO look at 'columns' option
 
-vim.opt.grepprg = "rg -n"
-
 vim.opt.fillchars = "diff: "
 
 vim.o.tildeop = true
