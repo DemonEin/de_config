@@ -180,23 +180,22 @@ vim.diagnostic.config({
 })
 
 vim.g.mapleader = " "
-local map = vim.api.nvim_set_keymap
-map('n', '<C-p>', ':Telescope find_files<cr>', {noremap = true})  
-map('n', '<Leader>r', ':grep \'\\b(<C-r><C-w>)\\b\'<cr>', {noremap = true})
-map('n', '<Leader>s', ':wa<cr>:sus<cr>', {noremap = true})
-map('n', '<Leader>i', ':grep -i \'\\b(<C-r><C-w>)\\b\'<cr>', {noremap = true})
-map('n', '<C-n>', ':silent cn<cr>', {noremap = true})
-map('n', '<C-e>', ':silent cp<cr>', {noremap = true})
-map('n', '<Leader>g', ':Git ', {noremap = true})
-map('n', '<Leader>b', ':Git blame<cr>', {noremap = true})
-map('n', '<Leader>h', ':vert h ', {noremap = true})
-map('n', '<C-j>', '<C-w>j', {noremap = true})
-map('n', '<C-l>', '<C-w>l', {noremap = true})
-map('n', '<C-k>', '<C-w>k', {noremap = true})
-map('n', '<C-h>', '<C-w>h', {noremap = true})
+vim.keymap.set('n', '<C-p>', ':Telescope find_files<cr>')
+vim.keymap.set('n', '<Leader>r', ':grep \'\\b(<C-r><C-w>)\\b\'<cr>')
+vim.keymap.set('n', '<Leader>s', ':wa<cr>:sus<cr>')
+vim.keymap.set('n', '<Leader>i', ':grep -i \'\\b(<C-r><C-w>)\\b\'<cr>')
+vim.keymap.set('n', '<C-n>', ':silent cn<cr>')
+vim.keymap.set('n', '<C-e>', ':silent cp<cr>')
+vim.keymap.set('n', '<Leader>g', ':Git ')
+vim.keymap.set('n', '<Leader>b', ':Git blame<cr>')
+vim.keymap.set('n', '<Leader>h', ':vert h ')
+vim.keymap.set('n', '<C-j>', '<C-w>j')
+vim.keymap.set('n', '<C-l>', '<C-w>l')
+vim.keymap.set('n', '<C-k>', '<C-w>k')
+vim.keymap.set('n', '<C-h>', '<C-w>h')
 vim.keymap.set('n', '<Leader>v', function()
     require('gitsigns').toggle_deleted()
-end, {noremap = true})
+end)
 
 function quit_unless_last_window()
     if (#vim.api.nvim_tabpage_list_wins(0)) > 1 then
@@ -204,9 +203,9 @@ function quit_unless_last_window()
     end
 end
 
-vim.keymap.set('n', '<Leader>z', quit_unless_last_window, {noremap = true})
+vim.keymap.set('n', '<Leader>z', quit_unless_last_window)
 
-map('n', '<Leader>j', '!$jq<cr>', {noremap = true})
+vim.keymap.set('n', '<Leader>j', '!$jq<cr>')
 
 function run_tsh()
     terminal_command = 'te de; shopt -s expand_aliases; . t.sh'
@@ -222,15 +221,15 @@ function run_tsh()
     end
 end
 
-vim.keymap.set('n', '<Leader>t', run_tsh, {noremap = true})
-vim.keymap.set('n', '<Leader>n', ':vs t.sh<cr>', {noremap = true})
+vim.keymap.set('n', '<Leader>t', run_tsh)
+vim.keymap.set('n', '<Leader>n', ':vs t.sh<cr>')
 
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
     char_uppercase = string.char(uppercase_ascii)
     char_lowercase = string.char(uppercase_ascii + 32)
-    map('n', 'm' .. char_lowercase, 'm' .. char_uppercase, {noremap = true})
-    map('n', '\'' .. char_lowercase, '\'' .. char_uppercase, {noremap = true})
+    vim.keymap.set('n', 'm' .. char_lowercase, 'm' .. char_uppercase)
+    vim.keymap.set('n', '\'' .. char_lowercase, '\'' .. char_uppercase)
 end
 
 -- copied from https://stackoverflow.com/questions/63906439/how-to-disable-line-numbers-in-neovim-terminal
