@@ -43,10 +43,6 @@ require('lspconfig')['pyright'].setup{
         return vim.fs.dirname(vim.fs.find({'pyrightconfig.json', 'pyproject.toml', 'setup.py'}, { upward = true })[1])
     end,
 }
-require('lspconfig')['tsserver'].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
 require('lspconfig')['rust_analyzer'].setup{
     on_attach = function(client, bufnr)
 
