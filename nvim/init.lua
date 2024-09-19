@@ -1,4 +1,9 @@
 require("config.lazy")
+vim.api.nvim_create_autocmd("VimEnter", {callback = function()
+    if require("lazy.status").has_updates then
+        require("lazy").update({show = false})
+    end
+end})
 
 vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 
