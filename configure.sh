@@ -30,7 +30,6 @@ rm -r ~/.config/nvim
 ln -s $SCRIPT_DIR/nvim ~/.config/nvim
 rm -r ~/.config/i3
 ln -s $SCRIPT_DIR/i3 ~/.config/i3
-ln -s $SCRIPT_DIR/alacritty.yml ~/.config/alacritty.yml
 ln -s $SCRIPT_DIR/alacritty.toml ~/.config/alacritty.toml
 sudo ln -s $SCRIPT_DIR/X11/xorg.conf.d/mouse-acceleration.conf /etc/X11/xorg.conf.d
 
