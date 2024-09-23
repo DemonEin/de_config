@@ -35,4 +35,3 @@ ln -s $SCRIPT_DIR/i3 ~/.config/i3
 ln -s $SCRIPT_DIR/alacritty.toml ~/.config/alacritty.toml
 sudo ln -s $SCRIPT_DIR/X11/xorg.conf.d/mouse-acceleration.conf /etc/X11/xorg.conf.d
 
-nvim +PackerSync
