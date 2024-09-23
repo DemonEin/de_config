@@ -25,6 +25,8 @@ git config --global difftool.prompt false
 git config --global core.editor nvim
 git config --global submodule.recurse true
 git config --global push.autoSetupRemote true
+git config --global merge.autoStash true
+git config --global rebase.autoStash true
 
 rm -r ~/.config/nvim
 ln -s $SCRIPT_DIR/nvim ~/.config/nvim
