@@ -227,6 +227,8 @@ end
 vim.keymap.set('n', '<Leader>t', run_tsh)
 vim.keymap.set('n', '<Leader>n', ':vs t.sh<cr>')
 
+vim.keymap.set('ca', 'H', 'vert h')
+
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
     char_uppercase = string.char(uppercase_ascii)
