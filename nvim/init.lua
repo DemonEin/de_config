@@ -26,7 +26,6 @@ require('telescope').load_extension('fzf')
 require('gitsigns').setup{
     signcolumn = false,
     numhl = true,
-    show_deleted = true,
 
     -- copied from gitsigns readme
     on_attach = function(bufnr)
