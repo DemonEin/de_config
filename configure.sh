@@ -27,6 +27,7 @@ git config --global submodule.recurse true
 git config --global push.autoSetupRemote true
 git config --global merge.autoStash true
 git config --global rebase.autoStash true
+git config --global submodule.fetchJobs 0
 
 rm -r ~/.config/nvim
 ln -s $SCRIPT_DIR/nvim ~/.config/nvim
