@@ -171,6 +171,8 @@ vim.o.splitright = true
 -- TODO look at 'columns' option
 
 vim.opt.fillchars = "diff: "
+vim.o.list = true
+vim.o.listchars = "trail:_"
 
 vim.o.tildeop = true
 
@@ -258,6 +260,10 @@ local autocmds = {
         { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] };
         { "TermOpen", "*", "startinsert" };
         { "TermOpen", "*", "setlocal listchars= nonumber norelativenumber" };
+    };
+    list_chars = {
+        { "InsertEnter", "*", "setlocal nolist" };
+        { "InsertLeave", "*", "setlocal list" };
     };
 }
 
