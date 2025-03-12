@@ -176,6 +176,8 @@ vim.o.listchars = "trail:_"
 
 vim.o.tildeop = true
 
+vim.o.spelllang = "en_us"
+
 vim.diagnostic.config({
     virtual_text = {
         severity = { min = vim.diagnostic.severity.INFO },
@@ -264,6 +266,9 @@ local autocmds = {
     list_chars = {
         { "InsertEnter", "*", "setlocal nolist" };
         { "InsertLeave", "*", "setlocal list" };
+    };
+    spell = {
+        { "FileType", "gitcommit,text,markdown", "setlocal spell" };
     };
 }
 
