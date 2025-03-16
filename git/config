@@ -1,0 +1,16 @@
+[diff]
+	tool = nvimdiff
+[merge]
+	tool = nvimdiff
+	autoStash = true
+[difftool]
+	prompt = false
+[core]
+	editor = nvim
+[submodule]
+	recurse = true
+	fetchJobs = 0
+[push]
+	autoSetupRemote = true
+[rebase]
+	autoStash = true

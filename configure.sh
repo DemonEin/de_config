@@ -19,20 +19,11 @@ fi
 
 source ~/.bashrc
 
-git config --global diff.tool nvimdiff
-git config --global merge.tool nvimdiff
-git config --global difftool.prompt false
-git config --global core.editor nvim
-git config --global submodule.recurse true
-git config --global push.autoSetupRemote true
-git config --global merge.autoStash true
-git config --global rebase.autoStash true
-git config --global submodule.fetchJobs 0
-
 rm -r ~/.config/nvim
 ln -s $SCRIPT_DIR/nvim ~/.config/nvim
 rm -r ~/.config/i3
 ln -s $SCRIPT_DIR/i3 ~/.config/i3
+ln -s $SCRIPT_DIR/git ~/.config/git
 ln -s $SCRIPT_DIR/alacritty.toml ~/.config/alacritty.toml
 sudo ln -s $SCRIPT_DIR/X11/xorg.conf.d/mouse-acceleration.conf /etc/X11/xorg.conf.d
 
