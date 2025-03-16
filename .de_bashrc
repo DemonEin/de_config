@@ -45,6 +45,16 @@ endat() {
     done
 }
 
+# removes trailing whitespace in the git diff between the worktree and the index
+cleanwhitespace() {
+    for FILE_LINE in $( git diff --check | rg '(.*):' -or '$1' ); do
+        echo removing trailing whitespace from $FILE_LINE
+        FILE=$( echo $FILE_LINE | rg '(.*):' -or '$1' )
+        LINE=$( echo $FILE_LINE | rg ':(\d+)' -or '$1' )
+        sed -i -E -e "${LINE}s/\\s+$//" $FILE
+    done
+}
+
 switchtask() {
     if ! [[ -n $( cut $TASK_DIR/list.txt -d' ' -f1 | rg $1 ) ]]; then
         echo "no such task in the list"
