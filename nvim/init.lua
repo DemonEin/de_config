@@ -112,8 +112,13 @@ link_highlights = {
     ['@variable.builtin'] = '@variable',
     ['@parameter'] = '@variable',
     ['@type.builtin'] = '@type',
+    ['@type.builtin.c'] = '@type',
+    ['@type.builtin.cpp'] = '@type',
     ['StorageClass'] = 'Type',
     ['Structure'] = 'Type',
+    ['Macro'] = 'PreProc',
+    ['Include'] = 'PreProc',
+    ['Character'] = 'Number',
 }
 
 for source, target in pairs(link_highlights) do
