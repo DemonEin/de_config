@@ -75,6 +75,18 @@ require('gitsigns').setup{
 require('lsp-config')
 
 require'nvim-treesitter.configs'.setup {
+    ensure_installed = {
+        "c",
+        "cpp",
+        "bash",
+        "make",
+        "rust",
+        "verilog",
+        "python",
+        "lua",
+        "vimdoc",
+        "markdown",
+    },
   highlight = {
     enable = true,
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
