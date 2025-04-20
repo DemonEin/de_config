@@ -203,8 +203,47 @@ vim.diagnostic.config({
     signs = false,
 })
 
+local telescope_actions = require("telescope.actions")
+local telescope_action_state = require("telescope.actions.state")
+
+local telescope_pickers = require("telescope.pickers")
+local telescope_finders = require("telescope.finders")
+local telescope_config = require("telescope.config").values
+local telescope_builtin = require("telescope.builtin")
+
+local change_directory = function(opts)
+    opts = opts or {}
+    local home_directory = os.getenv("HOME")
+    telescope_pickers.new(opts, {
+        prompt_title = "Change Directory",
+        finder = telescope_finders.new_oneshot_job({
+            "find",
+            home_directory,
+            "-maxdepth",
+            "1", "-mindepth",
+            "1", "-type", "d",
+            "-printf",
+            "%f\\n"
+        }, {}),
+        sorter = telescope_config.file_sorter(opts),
+        attach_mappings = function(prompt_bufnr, map)
+            telescope_actions.select_default:replace(function()
+                telescope_actions.close(prompt_bufnr)
+                vim.cmd("cd "
+                    .. home_directory
+                    .. "/"
+                    .. telescope_action_state.get_selected_entry()[1]
+                )
+                telescope_builtin.find_files()
+            end)
+            return true
+        end,
+    }):find()
+end
+
 vim.g.mapleader = " "
-vim.keymap.set('n', '<C-p>', ':Telescope find_files<cr>')
+vim.keymap.set('n', '<C-t>', change_directory)
+vim.keymap.set('n', '<C-p>', telescope_builtin.find_files)
 vim.keymap.set('n', '<Leader>r', ':grep \'\\b(<C-r><C-w>)\\b\'<cr>')
 vim.keymap.set('n', '<Leader>s', ':wa<cr>:sus<cr>')
 vim.keymap.set('n', '<Leader>i', ':grep -i \'\\b(<C-r><C-w>)\\b\'<cr>')
