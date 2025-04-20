@@ -35,6 +35,12 @@ require("lazy").setup({
     { "tpope/vim-fugitive" },
     { "nvim-treesitter/nvim-treesitter" },
     { "nvim-treesitter/nvim-treesitter-context" },
+    {
+        "stevearc/oil.nvim",
+        dependencies = { { "echasnovski/mini.icons", {} } },
+        -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+        lazy = false,
+    }
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
