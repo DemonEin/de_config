@@ -40,6 +40,10 @@ require("lazy").setup({
         dependencies = { { "echasnovski/mini.icons", {} } },
         -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
         lazy = false,
+    },
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' }
     }
   },
   -- Configure any other settings here. See the documentation for more details.
