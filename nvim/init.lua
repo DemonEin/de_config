@@ -360,6 +360,10 @@ local autocmds = {
     spell = {
         { "FileType", "gitcommit,text,markdown", "setlocal spell" };
     };
+    macro_cmdheight = {
+        { "RecordingEnter", "*", "set cmdheight=1" };
+        { "RecordingLeave", "*", "set cmdheight=0" };
+    };
 }
 
 nvim_create_augroups(autocmds)
