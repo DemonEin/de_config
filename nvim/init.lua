@@ -367,6 +367,9 @@ local autocmds = {
         { "RecordingEnter", "*", "set cmdheight=1" };
         { "RecordingLeave", "*", "set cmdheight=0" };
     };
+    focus_save = {
+        { "FocusLost", "*", "wa" },
+    },
 }
 
 nvim_create_augroups(autocmds)
