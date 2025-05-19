@@ -51,10 +51,16 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
--- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
-editor = os.getenv("EDITOR") or "nvim"
-editor_cmd = terminal .. " -e " .. editor
+
+shell_class = "Shell"
+shell_command = "alacritty --class " .. shell_class
+
+editor_class = "Editor"
+editor_command = "alacritty --class " .. editor_class .. " -e " .. (os.getenv("EDITOR") or "nvim")
+
+browser_class = "Google-chrome"
+browser_command = "google-chrome-stable"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -89,7 +95,7 @@ awful.layout.layouts = {
 myawesomemenu = {
     { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
     { "manual", terminal .. " -e man awesome" },
-    { "edit config", editor_cmd .. " " .. awesome.conffile },
+    { "edit config", editor_command .. " " .. awesome.conffile },
     { "restart", awesome.restart },
     { "quit", function() awesome.quit() end },
 }
@@ -236,6 +242,38 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
+-- increment through the clients in the current tag that satisfy the filter function
+-- with the signature function(client) -> bool
+-- returns whether an eligible client was found (and therefore focused)
+local function increment_through_clients_satisfying(filter)
+    -- TODO make this work with multiple tags selected
+    local selected_tag = awful.screen.focused().selected_tag
+    local got_focused_client = false
+    local first_eligible_client = nil
+
+    for _, c in ipairs(client.get()) do
+        if c.first_tag == selected_tag and filter(c) then
+            if got_focused_client then
+                c:jump_to()
+                return true
+            end
+            if c == client.focus then
+                got_focused_client = true
+            end
+            if first_eligible_client == nil then
+                first_eligible_client = c
+            end
+        end
+    end
+
+    if first_eligible_client ~= nil then
+        first_eligible_client:jump_to()
+        return true
+    else
+        return false
+    end
+end
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key(
@@ -280,9 +318,75 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey },
-        "w",
-        function() mymainmenu:show() end,
-        { description = "show main menu", group = "awesome" }
+        "n",
+        function()
+            if not increment_through_clients_satisfying(function(c)
+                return c.class == shell_class
+            end) then
+                awful.spawn(shell_command)
+            end
+        end,
+        { description = "Increment through shells in current context", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "e",
+        function()
+            if not increment_through_clients_satisfying(function(c)
+                return c.class == browser_class
+            end) then
+                awful.spawn(browser_command)
+            end
+        end,
+        { description = "Increment through browsers in current context", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "o",
+        function()
+            if not increment_through_clients_satisfying(function(c)
+                return c.class == editor_class
+            end) then
+                awful.spawn(editor_command)
+            end
+        end,
+        { description = "Increment through editors in current context", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "i",
+        function()
+            increment_through_clients_satisfying(function(c)
+                return c.class ~= shell_class
+                    and c.class ~= browser_class
+                    and c.class ~= editor_class
+            end)
+        end,
+        { description = "Increment through other clients current context", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "l",
+        function()
+            awful.spawn(shell_command)
+        end,
+        { description = "Create shell", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "u",
+        function()
+            awful.spawn(browser_command)
+        end,
+        { description = "Create browser", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "y",
+        function()
+            awful.spawn(editor_command)
+        end,
+        { description = "Create editor", group = "client" }
     ),
 
     -- Layout manipulation
@@ -335,11 +439,6 @@ globalkeys = gears.table.join(
         function() awful.spawn(terminal) end,
         { description = "open a terminal", group = "launcher" }
     ),
-    awful.key({ modkey },
-        "b",
-        function() awful.spawn("google-chrome-stable") end,
-        { description = "open a terminal", group = "launcher" }
-    ),
     awful.key(
         { modkey, "Control" },
         "r",
@@ -353,6 +452,7 @@ globalkeys = gears.table.join(
         { description = "quit awesome", group = "awesome" }
     ),
 
+    --[[
     awful.key(
         { modkey },
         "l",
@@ -387,6 +487,7 @@ globalkeys = gears.table.join(
         "l", function() awful.tag.incncol(-1, nil, true) end,
         { description = "decrease the number of columns", group = "layout" }
     ),
+    --]]
     awful.key(
         { modkey },
         "space",
@@ -474,12 +575,14 @@ clientkeys = gears.table.join(
         function(c) c:swap(awful.client.getmaster()) end,
         { description = "move to master", group = "client" }
     ),
+    --[[
     awful.key(
         { modkey },
         "o",
         function(c) c:move_to_screen() end,
         { description = "move to screen", group = "client" }
     ),
+    --]]
     awful.key(
         { modkey },
         "t",
@@ -488,7 +591,7 @@ clientkeys = gears.table.join(
     ),
     awful.key(
         { modkey },
-        "n",
+        "v",
         function(c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
