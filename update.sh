@@ -1,9 +1,15 @@
 #!/bin/bash
 
 if command -v yay; then
-    yay --answerclean None --answerdiff None --answeredit None --answerupgrade None --removemake
+    yay \
+        --answerclean None \
+        --answerdiff None \
+        --answeredit None \
+        --answerupgrade None \
+        --removemake \
+        --noconfirm
 elif command -v pacman; then
-    sudo pacman -Syu
+    sudo pacman -Syu --noconfirm
     # TODO remove results of pacman -Qte
 fi
 
