@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# keep sudo authenticated for the duration of this script
+sudo -v
+while true; do sleep 60; sudo -v; done &
+trap "kill $!" SIGINT SIGTERM EXIT
+
 if command -v yay; then
     yay \
         --answerclean None \
