@@ -337,40 +337,28 @@ for uppercase_ascii=65,90 do
     vim.keymap.set('n', '\'' .. char_lowercase, '\'' .. char_uppercase)
 end
 
--- copied from https://stackoverflow.com/questions/63906439/how-to-disable-line-numbers-in-neovim-terminal
--- autocommands
---- This function is taken from https://github.com/norcalli/nvim_utils
+for _, autocommand in ipairs({
 
-local api = vim.api
-function nvim_create_augroups(definitions)
-  for group_name, definition in pairs(definitions) do
-    api.nvim_command('augroup '..group_name)
-    api.nvim_command('autocmd!')
-    for _, def in ipairs(definition) do
-      local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
-      api.nvim_command(command)
-    end
-    api.nvim_command('augroup END')
-  end
+    { "TermOpen", "*", function()
+        vim.keymap.set("t", "<Esc>", "<c-\\><c-n>", { buffer = true })
+    end },
+    { "TermOpen", "*", vim.cmd.startinsert },
+    { "TermOpen", "*", function()
+        vim.wo.listchars = ""
+        vim.wo.number = false
+        vim.wo.relativenumber = false
+    end },
+
+    { "FileType", "gitcommit,text,markdown", function() vim.o.spell = true end },
+
+    { "RecordingEnter", "*", function() vim.o.cmdheight = 1 end },
+    { "RecordingLeave", "*", function() vim.o.cmdheight = 0 end },
+
+    { "FocusLost", "*", vim.cmd.wa },
+
+}) do
+    vim.api.nvim_create_autocmd(autocommand[1], {
+        pattern = autocommand[2],
+        callback = autocommand[3],
+    })
 end
-
-local autocmds = {
-    terminal_job = {
-        { "TermOpen", "*", [[tnoremap <buffer> <Esc> <c-\><c-n>]] };
-        { "TermOpen", "*", "startinsert" };
-        { "TermOpen", "*", "setlocal listchars= nonumber norelativenumber" };
-    };
-    spell = {
-        { "FileType", "gitcommit,text,markdown", "setlocal spell" };
-    };
-    macro_cmdheight = {
-        { "RecordingEnter", "*", "set cmdheight=1" };
-        { "RecordingLeave", "*", "set cmdheight=0" };
-    };
-    focus_save = {
-        { "FocusLost", "*", "wa" },
-    },
-}
-
-nvim_create_augroups(autocmds)
--- autocommands END
