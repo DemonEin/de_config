@@ -1,9 +1,9 @@
 require("config.lazy")
-vim.api.nvim_create_autocmd("VimEnter", {callback = function()
+vim.api.nvim_create_autocmd("VimEnter", { callback = function()
     if require("lazy.status").has_updates then
-        require("lazy").update({show = false})
+        require("lazy").update({ show = false })
     end
-end})
+end })
 
 vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 
@@ -21,7 +21,7 @@ require("catppuccin").setup({
     },
 })
 
-require('telescope').load_extension('fzf')
+require("telescope").load_extension("fzf")
 require("oil").setup({
     keymaps = {
         ["g?"] = { "actions.show_help", mode = "n" },
@@ -42,65 +42,69 @@ require("oil").setup({
         ["gx"] = "actions.open_external",
         ["g."] = { "actions.toggle_hidden", mode = "n" },
         ["g\\"] = { "actions.toggle_trash", mode = "n" },
-      },
+    },
     use_default_keymaps = false,
     view_options = {
         show_hidden = true,
     },
 })
 
-require('gitsigns').setup{
+require("gitsigns").setup({
     signcolumn = false,
     numhl = true,
 
     -- copied from gitsigns readme
     on_attach = function(bufnr)
-        local gitsigns = require('gitsigns')
+        local gitsigns = require("gitsigns")
 
         local function map(mode, l, r, opts)
-          opts = opts or {}
-          opts.buffer = bufnr
-          vim.keymap.set(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
         end
 
         -- Navigation
-        map('n', '<C-.>', function()
-          if vim.wo.diff then
-            vim.cmd.normal({']c', bang = true})
-          else
-            gitsigns.nav_hunk('next')
-          end
+        map("n", "<C-.>", function()
+            if vim.wo.diff then
+                vim.cmd.normal({"]c", bang = true })
+            else
+                gitsigns.nav_hunk('next')
+            end
         end)
 
-        map('n', '<C-/>', function()
-          if vim.wo.diff then
-            vim.cmd.normal({'[c', bang = true})
-          else
-            gitsigns.nav_hunk('prev')
-          end
+        map("n", "<C-/>", function()
+            if vim.wo.diff then
+                vim.cmd.normal({ "[c", bang = true })
+            else
+                gitsigns.nav_hunk("prev")
+            end
         end)
 
         -- Actions
-        map('n', '<leader>hs', gitsigns.stage_hunk)
-        map('n', '<leader>hr', gitsigns.reset_hunk)
-        map('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-        map('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-        map('n', '<leader>hS', gitsigns.stage_buffer)
-        map('n', '<leader>hu', gitsigns.undo_stage_hunk)
-        map('n', '<leader>hR', gitsigns.reset_buffer)
-        map('n', '<leader>hp', gitsigns.preview_hunk)
-        map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
-        map('n', '<leader>hd', gitsigns.diffthis)
-        map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
+        map("n", "<leader>hs", gitsigns.stage_hunk)
+        map("n", "<leader>hr", gitsigns.reset_hunk)
+        map("v", "<leader>hs", function()
+            gitsigns.stage_hunk { vim.fn.line("."), vim.fn.line("v") }
+        end)
+        map("v", "<leader>hr", function()
+            gitsigns.reset_hunk { vim.fn.line("."), vim.fn.line("v") }
+        end)
+        map("n", "<leader>hS", gitsigns.stage_buffer)
+        map("n", "<leader>hu", gitsigns.undo_stage_hunk)
+        map("n", "<leader>hR", gitsigns.reset_buffer)
+        map("n", "<leader>hp", gitsigns.preview_hunk)
+        map("n", "<leader>hb", function() gitsigns.blame_line{ full = true } end)
+        map("n", "<leader>hd", gitsigns.diffthis)
+        map("n", "<leader>hD", function() gitsigns.diffthis("~") end)
 
         -- Text object
-        map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-      end
-}
+        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+    end
+})
 
-require('lsp-config')
+require("lsp-config")
 
-require'nvim-treesitter.configs'.setup {
+require("nvim-treesitter.configs").setup({
     ensure_installed = {
         "c",
         "cpp",
@@ -113,20 +117,20 @@ require'nvim-treesitter.configs'.setup {
         "vimdoc",
         "markdown",
     },
-  highlight = {
-    enable = true,
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-  indent = {
-      enable = true,
-  },
-}
+    highlight = {
+        enable = true,
+        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+        -- Using this option may slow down your editor, and you may see some duplicate highlights.
+        -- Instead of true it can also be a list of languages
+        additional_vim_regex_highlighting = false,
+    },
+    indent = {
+        enable = true,
+    },
+})
 
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.brightscript = {
   install_info = {
     url = "~/tree-sitter-brightscript", -- local path or git repo
@@ -140,44 +144,46 @@ parser_config.brightscript = {
 
 vim.filetype.add({
     extension = {
-        brs = 'brightscript'
+        brs = 'brightscript',
     }
 })
 
-require('lualine').setup({
+require("lualine").setup({
     sections = {
-        lualine_a = { function() return string.gsub(vim.fn.getcwd(), "^" .. vim.fn.getenv("HOME"), "~") end },
-        lualine_b = {'branch'},
-        lualine_c = {'filename'},
+        lualine_a = { function()
+            return string.gsub(vim.fn.getcwd(), "^" .. vim.fn.getenv("HOME"), "~")
+        end },
+        lualine_b = {"branch"},
+        lualine_c = {"filename"},
         lualine_x = {},
-        lualine_y = {'progress'},
-        lualine_z = {'location'}
+        lualine_y = {"progress"},
+        lualine_z = {"location"},
     },
 })
 
-vim.cmd [[colorscheme catppuccin]]
+vim.cmd("colorscheme catppuccin")
 vim.opt.relativenumber = true
 vim.opt.number = true
 
 link_highlights = {
-    ['@function.builtin'] = '@function',
-    ['@variable.builtin'] = '@variable',
-    ['@parameter'] = '@variable',
-    ['@type.builtin'] = '@type',
-    ['@type.builtin.c'] = '@type',
-    ['@type.builtin.cpp'] = '@type',
-    ['@keyword.modifier'] = '@type',
-    ['@keyword.modifier.c'] = '@type',
-    ['@keyword.modifier.cpp'] = '@type',
-    ['StorageClass'] = 'Type',
-    ['Structure'] = 'Type',
-    ['Macro'] = 'PreProc',
-    ['Include'] = 'PreProc',
-    ['Character'] = 'Number',
+    ["@function.builtin"] = "@function",
+    ["@variable.builtin"] = "@variable",
+    ["@parameter"] = "@variable",
+    ["@type.builtin"] = "@type",
+    ["@type.builtin.c"] = "@type",
+    ["@type.builtin.cpp"] = "@type",
+    ["@keyword.modifier"] = "@type",
+    ["@keyword.modifier.c"] = "@type",
+    ["@keyword.modifier.cpp"] = "@type",
+    ["StorageClass"] = "Type",
+    ["Structure"] = "Type",
+    ["Macro"] = "PreProc",
+    ["Include"] = "PreProc",
+    ["Character"] = "Number",
 }
 
 for source, target in pairs(link_highlights) do
-    vim.api.nvim_set_hl(0, source, { link = target } )
+    vim.api.nvim_set_hl(0, source, { link = target })
 end
 
 vim.opt.autowrite = true
@@ -203,7 +209,7 @@ if os.getenv("IS_WSL") then
     ]]
 end
 
-vim.cmd('set clipboard+=unnamedplus')
+vim.cmd("set clipboard+=unnamedplus")
 
 -- keep cursor centered 
 vim.opt.scrolloff = 9999
@@ -263,7 +269,7 @@ local change_directory = function(opts)
             "1", "-mindepth",
             "1", "-type", "d",
             "-printf",
-            "%f\\n"
+            "%f\\n",
         }, {}),
         sorter = telescope_config.file_sorter(opts),
         attach_mappings = function(prompt_bufnr, map)
@@ -282,59 +288,59 @@ local change_directory = function(opts)
 end
 
 vim.g.mapleader = " "
-vim.keymap.set('n', '<C-t>', change_directory)
-vim.keymap.set('n', '<C-p>', telescope_builtin.find_files)
-vim.keymap.set('n', '<Leader>r', ':grep \'\\b(<C-r><C-w>)\\b\'<cr>')
-vim.keymap.set('n', '<Leader>s', ':wa<cr>:sus<cr>')
-vim.keymap.set('n', '<Leader>i', ':grep -i \'\\b(<C-r><C-w>)\\b\'<cr>')
-vim.keymap.set('n', '<C-n>', ':silent cn<cr>')
-vim.keymap.set('n', '<C-e>', ':silent cp<cr>')
-vim.keymap.set('n', '<Leader>g', ':Git ')
-vim.keymap.set('n', '<Leader>b', ':Git blame<cr>')
-vim.keymap.set('n', '<Leader>h', ':vert h ')
-vim.keymap.set('n', '<C-j>', '<C-w>j')
-vim.keymap.set('n', '<C-l>', '<C-w>l')
-vim.keymap.set('n', '<C-k>', '<C-w>k')
-vim.keymap.set('n', '<C-h>', '<C-w>h')
-vim.keymap.set('n', '<Leader>v', function()
-    require('gitsigns').toggle_deleted()
+vim.keymap.set("n", "<C-t>", change_directory)
+vim.keymap.set("n", "<C-p>", telescope_builtin.find_files)
+vim.keymap.set("n", "<Leader>r", ":grep '\\b(<C-r><C-w>)\\b'<cr>")
+vim.keymap.set("n", "<Leader>s", ":wa<cr>:sus<cr>")
+vim.keymap.set("n", "<Leader>i", ":grep -i '\\b(<C-r><C-w>)\\b'<cr>")
+vim.keymap.set("n", "<C-n>", ":silent cn<cr>")
+vim.keymap.set("n", "<C-e>", ":silent cp<cr>")
+vim.keymap.set("n", "<Leader>g", ":Git ")
+vim.keymap.set("n", "<Leader>b", ":Git blame<cr>")
+vim.keymap.set("n", "<Leader>h", ":vert h ")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<Leader>v", function()
+    require("gitsigns").toggle_deleted()
 end)
 
 function quit_unless_last_window()
     if (#vim.api.nvim_tabpage_list_wins(0)) > 1 then
-        vim.cmd('q')
+        vim.cmd("q")
     end
 end
 
-vim.keymap.set('n', '<Leader>z', quit_unless_last_window)
+vim.keymap.set("n", "<Leader>z", quit_unless_last_window)
 
-vim.keymap.set('n', '<Leader>j', '!$jq<cr>')
+vim.keymap.set("n", "<Leader>j", "!$jq<cr>")
 
 function run_tsh()
-    terminal_command = 'te de; shopt -s expand_aliases; . t.sh'
+    terminal_command = "te de; shopt -s expand_aliases; . t.sh"
 
-    vim.cmd('wa')
+    vim.cmd("wa")
 
-    tsh_window_number = vim.fn.bufwinnr('t.sh')
+    tsh_window_number = vim.fn.bufwinnr("t.sh")
     if tsh_window_number ~= -1 then
-        vim.cmd('norm ' .. tsh_window_number .. ' <C-W><C-W>')
+        vim.cmd("norm " .. tsh_window_number .. " <C-W><C-W>")
         vim.cmd(terminal_command)
     else
-        vim.cmd('vs +' .. string.gsub(terminal_command, ' ', '\\ '))
+        vim.cmd("vs +" .. string.gsub(terminal_command, " ", "\\ "))
     end
 end
 
-vim.keymap.set('n', '<Leader>t', run_tsh)
-vim.keymap.set('n', '<Leader>n', ':vs t.sh<cr>')
+vim.keymap.set("n", "<Leader>t", run_tsh)
+vim.keymap.set("n", "<Leader>n", ":vs t.sh<cr>")
 
-vim.keymap.set('ca', 'H', 'vert h')
+vim.keymap.set("ca", "H", "vert h")
 
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
     char_uppercase = string.char(uppercase_ascii)
     char_lowercase = string.char(uppercase_ascii + 32)
-    vim.keymap.set('n', 'm' .. char_lowercase, 'm' .. char_uppercase)
-    vim.keymap.set('n', '\'' .. char_lowercase, '\'' .. char_uppercase)
+    vim.keymap.set("n", "m" .. char_lowercase, "m" .. char_uppercase)
+    vim.keymap.set("n", "'" .. char_lowercase, "'" .. char_uppercase)
 end
 
 for _, autocommand in ipairs({
