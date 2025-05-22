@@ -1,44 +1,20 @@
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-end
-
-local lsp_flags = {
-  -- This is the default in Nvim 0.7+
-  debounce_text_changes = 150,
+vim.lsp.config.pyright = {
+    cmd = { "pyright-langserver", "--stdio" },
+    filetypes = { "python" },
+    root_markers = { "pyrightconfig.json", "pyproject.toml", "setup.py" },
 }
-require('lspconfig')['pyright'].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-    root_dir = function()
-        return vim.fs.dirname(vim.fs.find({'pyrightconfig.json', 'pyproject.toml', 'setup.py'}, { upward = true })[1])
-    end,
+vim.lsp.enable("pyright")
+
+vim.lsp.config["rust-analyzer"] = {
+    cmd = { "rust-analyzer" },
+    filetypes = { "rust" },
+    root_markers = { "Cargo.toml" },
 }
-require('lspconfig')['rust_analyzer'].setup{
-    on_attach = function(client, bufnr)
+vim.lsp.enable("rust-analyzer")
 
-        vim.api.nvim_create_autocmd({'TextChanged', 'InsertLeave'}, {
-            callback = function()
-                if #vim.lsp.get_active_clients({ name = 'rust_analyzer' }) ~= 0 then
-                    vim.cmd('write')
-                end
-            end,
-            buffer = bufnr,
-            nested = true,
-        })
-
-        on_attach(client, bufnr)
-
-    end,
-    flags = lsp_flags,
-    -- Server-specific settings...
-    settings = {
-      ["rust-analyzer"] = {}
-    }
+vim.lsp.config.clangd = {
+    cmd = { "clangd" },
+    filetypes = { "c", "cpp" },
+    root_markers = { ".clangd", "compile_commands.json" },
 }
-
-require('lspconfig')['clangd'].setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
-
+vim.lsp.enable("clangd")

@@ -41,7 +41,6 @@ require("lazy").setup({
             dependencies = { "nvim-lua/plenary.nvim" },
         },
         { "catppuccin/nvim", name = "catppuccin" },
-        { "neovim/nvim-lspconfig" },
         { "lewis6991/gitsigns.nvim" },
         { "tpope/vim-fugitive" },
         { "nvim-treesitter/nvim-treesitter" },
