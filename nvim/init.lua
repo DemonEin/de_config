@@ -162,8 +162,6 @@ require("lualine").setup({
 })
 
 vim.cmd("colorscheme catppuccin")
-vim.opt.relativenumber = true
-vim.opt.number = true
 
 link_highlights = {
     ["@function.builtin"] = "@function",
@@ -185,9 +183,6 @@ link_highlights = {
 for source, target in pairs(link_highlights) do
     vim.api.nvim_set_hl(0, source, { link = target })
 end
-
-vim.opt.autowrite = true
-vim.opt.autowriteall = true
 
 -- define this in WSL so clipboard is set correcty
 -- needed to fix startup performance issue
@@ -211,36 +206,27 @@ end
 
 vim.cmd("set clipboard+=unnamedplus")
 
--- keep cursor centered 
-vim.opt.scrolloff = 9999
-
-vim.opt.wrap = false
-
--- if removing, search for 'cmdheight' to see things that relate
--- and might have to be changed
-vim.opt.cmdheight = 0
-
-vim.opt.hlsearch = false
--- vim.opt.colorcolumn = '80'
-
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-
-vim.opt.foldlevel = 9999
-
-vim.opt.updatetime = 100
-
-vim.o.splitright = true
-
--- TODO look at 'columns' option
-
-vim.opt.fillchars = "diff: "
-
-vim.o.tildeop = true
-
+-- options
+vim.o.autowrite = true
+vim.o.autowriteall = true
+vim.o.cmdheight = 0 -- if removing, search for 'cmdheight' to see things that relate
+                    -- and might have to be changed
+-- vim.o.colorcolumn = '80'
+vim.o.expandtab = true
+vim.o.fillchars = "diff: "
+vim.o.foldlevel = 9999
+vim.o.hlsearch = false
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.scrolloff = 9999 -- keep cursor vertically centered
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
 vim.o.spelllang = "en_us"
+vim.o.splitright = true
+vim.o.tabstop = 4
+vim.o.tildeop = true
+vim.o.updatetime = 100
+vim.o.wrap = false
 
 vim.diagnostic.config({
     virtual_text = {
