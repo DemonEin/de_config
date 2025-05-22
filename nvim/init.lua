@@ -49,7 +49,8 @@ require("oil").setup({
     },
 })
 
-require("gitsigns").setup({
+local gitsigns = require("gitsigns")
+gitsigns.setup({
     signcolumn = false,
     numhl = true,
 
@@ -63,39 +64,13 @@ require("gitsigns").setup({
             vim.keymap.set(mode, l, r, opts)
         end
 
-        -- Navigation
-        map("n", "<C-.>", function()
-            if vim.wo.diff then
-                vim.cmd.normal({"]c", bang = true })
-            else
-                gitsigns.nav_hunk('next')
-            end
-        end)
-
-        map("n", "<C-/>", function()
-            if vim.wo.diff then
-                vim.cmd.normal({ "[c", bang = true })
-            else
-                gitsigns.nav_hunk("prev")
-            end
-        end)
-
         -- Actions
-        map("n", "<leader>hs", gitsigns.stage_hunk)
-        map("n", "<leader>hr", gitsigns.reset_hunk)
-        map("v", "<leader>hs", function()
+        map("v", "<Leader>hs", function()
             gitsigns.stage_hunk { vim.fn.line("."), vim.fn.line("v") }
         end)
-        map("v", "<leader>hr", function()
+        map("v", "<Leader>hr", function()
             gitsigns.reset_hunk { vim.fn.line("."), vim.fn.line("v") }
         end)
-        map("n", "<leader>hS", gitsigns.stage_buffer)
-        map("n", "<leader>hu", gitsigns.undo_stage_hunk)
-        map("n", "<leader>hR", gitsigns.reset_buffer)
-        map("n", "<leader>hp", gitsigns.preview_hunk)
-        map("n", "<leader>hb", function() gitsigns.blame_line{ full = true } end)
-        map("n", "<leader>hd", gitsigns.diffthis)
-        map("n", "<leader>hD", function() gitsigns.diffthis("~") end)
 
         -- Text object
         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
@@ -243,81 +218,123 @@ local telescope_finders = require("telescope.finders")
 local telescope_config = require("telescope.config").values
 local telescope_builtin = require("telescope.builtin")
 
-local change_directory = function(opts)
-    opts = opts or {}
-    local home_directory = os.getenv("HOME")
-    telescope_pickers.new(opts, {
-        prompt_title = "Change Directory",
-        finder = telescope_finders.new_oneshot_job({
-            "find",
-            home_directory,
-            "-maxdepth",
-            "1", "-mindepth",
-            "1", "-type", "d",
-            "-printf",
-            "%f\\n",
-        }, {}),
-        sorter = telescope_config.file_sorter(opts),
-        attach_mappings = function(prompt_bufnr, map)
-            telescope_actions.select_default:replace(function()
-                telescope_actions.close(prompt_bufnr)
-                vim.cmd("cd "
-                    .. home_directory
-                    .. "/"
-                    .. telescope_action_state.get_selected_entry()[1]
-                )
-                telescope_builtin.find_files()
-            end)
-            return true
-        end,
-    }):find()
-end
+-- keymaps, sorted by their position on the keyboard, first by row then by column
+
+-- I don't generally add keymaps in on_attach functions because I don't like to
+-- use keys for other things when the plugin/lsp/whatever isn't attached
 
 vim.g.mapleader = " "
-vim.keymap.set("n", "<C-t>", change_directory)
-vim.keymap.set("n", "<C-p>", telescope_builtin.find_files)
-vim.keymap.set("n", "<Leader>r", ":grep '\\b(<C-r><C-w>)\\b'<cr>")
-vim.keymap.set("n", "<Leader>s", ":wa<cr>:sus<cr>")
-vim.keymap.set("n", "<Leader>i", ":grep -i '\\b(<C-r><C-w>)\\b'<cr>")
-vim.keymap.set("n", "<C-n>", ":silent cn<cr>")
-vim.keymap.set("n", "<C-e>", ":silent cp<cr>")
-vim.keymap.set("n", "<Leader>g", ":Git ")
-vim.keymap.set("n", "<Leader>b", ":Git blame<cr>")
-vim.keymap.set("n", "<Leader>h", ":vert h ")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<Leader>v", function()
-    require("gitsigns").toggle_deleted()
-end)
 
-function quit_unless_last_window()
-    if (#vim.api.nvim_tabpage_list_wins(0)) > 1 then
-        vim.cmd("q")
-    end
+-- normal mode keymaps
+for _, map in ipairs({
+    { "gr", vim.lsp.buf.references },
+    { "gi", vim.lsp.buf.implementation },
+    { "gd", vim.lsp.buf.definition },
+    { "gD", vim.lsp.buf.declaration },
+    { "K", vim.lsp.buf.hover },
+    { "[d", vim.diagnostic.goto_prev },
+    { "]d", vim.diagnostic.goto_next },
+
+    { "<C-p>", telescope_builtin.find_files },
+    { "<C-j>", "<C-w>j" },
+    { "<C-l>", "<C-w>l" },
+    { "<C-t>", function(opts) -- telescope picker to change directory
+        opts = opts or {}
+        local home_directory = os.getenv("HOME")
+        telescope_pickers.new(opts, {
+            prompt_title = "Change Directory",
+            finder = telescope_finders.new_oneshot_job({
+                "find",
+                home_directory,
+                "-maxdepth",
+                "1", "-mindepth",
+                "1", "-type", "d",
+                "-printf",
+                "%f\\n",
+            }, {}),
+            sorter = telescope_config.file_sorter(opts),
+            attach_mappings = function(prompt_bufnr, map)
+                telescope_actions.select_default:replace(function()
+                    telescope_actions.close(prompt_bufnr)
+                    vim.cmd("cd "
+                        .. home_directory
+                        .. "/"
+                        .. telescope_action_state.get_selected_entry()[1]
+                    )
+                    telescope_builtin.find_files()
+                end)
+                return true
+            end,
+        }):find()
+    end },
+    { "<C-n>", ":silent cn<cr>" },
+    { "<C-e>", ":silent cp<cr>" },
+    { "<C-k>", "<C-w>k" },
+    { "<C-h>", "<C-w>h" },
+    { "<C-.>", function()
+        if vim.wo.diff then
+            vim.cmd.normal({ "]c", bang = true })
+        else
+            gitsigns.nav_hunk("next")
+        end
+    end },
+    { "<C-/>", function()
+        if vim.wo.diff then
+            vim.cmd.normal({ "[c", bang = true })
+        else
+            gitsigns.nav_hunk("prev")
+        end
+    end },
+
+    { "<Leader>q", vim.diagnostic.setloclist },
+    { "<Leader>wl", function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end },
+    { "<Leader>wa", vim.lsp.buf.add_workspace_folder },
+    { "<Leader>wr", vim.lsp.buf.remove_workspace_folder },
+    { "<Leader>f", vim.lsp.buf.format },
+    { "<Leader>b", ":Git blame<cr>" },
+    { "<Leader>j", "!$jq<cr>" },
+    { "<Leader>r", ":grep '\\b(<C-r><C-w>)\\b'<cr>" },
+    { "<Leader>s", ":wa<cr>:sus<cr>" },
+    { "<Leader>t", function() -- run t.sh
+        terminal_command = "te de; shopt -s expand_aliases; . t.sh"
+
+        vim.cmd("wa")
+
+        tsh_window_number = vim.fn.bufwinnr("t.sh")
+        if tsh_window_number ~= -1 then
+            vim.cmd("norm " .. tsh_window_number .. " <C-W><C-W>")
+            vim.cmd(terminal_command)
+        else
+            vim.cmd("vs +" .. string.gsub(terminal_command, " ", "\\ "))
+        end
+    end },
+    { "<Leader>g", ":Git " },
+    { "<Leader>n", ":vs t.sh<cr>" },
+    { "<Leader>e", vim.diagnostic.open_float },
+    { "<Leader>i", ":grep -i '\\b(<C-r><C-w>)\\b'<cr>" },
+    { "<Leader>z", function() -- quit unless last window
+        if (#vim.api.nvim_tabpage_list_wins(0)) > 1 then
+            vim.cmd("q")
+        end
+    end },
+    { "<Leader>ca", vim.lsp.buf.code_action },
+    { "<Leader>D", vim.lsp.buf.type_definition },
+    { "<Leader>v", function() require("gitsigns").toggle_deleted() end },
+    { "<Leader>h", ":vert h " },
+    { "<Leader>hp", gitsigns.preview_hunk },
+    { "<Leader>hb", function() gitsigns.blame_line({ full = true }) end },
+    { "<Leader>hu", gitsigns.undo_stage_hunk },
+    { "<Leader>hr", gitsigns.reset_hunk },
+    { "<Leader>hR", gitsigns.reset_buffer },
+    { "<Leader>hs", gitsigns.stage_hunk },
+    { "<Leader>hS", gitsigns.stage_buffer },
+    { "<Leader>hd", gitsigns.diffthis },
+    { "<Leader>hD", function() gitsigns.diffthis("~") end },
+}) do
+    vim.keymap.set("n", map[1], map[2])
 end
-
-vim.keymap.set("n", "<Leader>z", quit_unless_last_window)
-
-vim.keymap.set("n", "<Leader>j", "!$jq<cr>")
-
-function run_tsh()
-    terminal_command = "te de; shopt -s expand_aliases; . t.sh"
-
-    vim.cmd("wa")
-
-    tsh_window_number = vim.fn.bufwinnr("t.sh")
-    if tsh_window_number ~= -1 then
-        vim.cmd("norm " .. tsh_window_number .. " <C-W><C-W>")
-        vim.cmd(terminal_command)
-    else
-        vim.cmd("vs +" .. string.gsub(terminal_command, " ", "\\ "))
-    end
-end
-
-vim.keymap.set("n", "<Leader>t", run_tsh)
-vim.keymap.set("n", "<Leader>n", ":vs t.sh<cr>")
 
 vim.keymap.set("ca", "H", "vert h")
 
