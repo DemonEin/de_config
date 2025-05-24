@@ -7,20 +7,6 @@ end })
 
 vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 
-require("catppuccin").setup({
-    custom_highlights = function(colors)
-        return {
-            Type = { fg = colors.blue },
-            Function = { fg = colors.yellow },
-            Character = { fg = colors.teal },
-        }
-    end,
-
-    styles = {
-        conditionals = {},
-    },
-})
-
 require("telescope").load_extension("fzf")
 require("oil").setup({
     keymaps = {
@@ -136,28 +122,7 @@ require("lualine").setup({
     },
 })
 
-vim.cmd("colorscheme catppuccin")
-
-link_highlights = {
-    ["@function.builtin"] = "@function",
-    ["@variable.builtin"] = "@variable",
-    ["@parameter"] = "@variable",
-    ["@type.builtin"] = "@type",
-    ["@type.builtin.c"] = "@type",
-    ["@type.builtin.cpp"] = "@type",
-    ["@keyword.modifier"] = "@type",
-    ["@keyword.modifier.c"] = "@type",
-    ["@keyword.modifier.cpp"] = "@type",
-    ["StorageClass"] = "Type",
-    ["Structure"] = "Type",
-    ["Macro"] = "PreProc",
-    ["Include"] = "PreProc",
-    ["Character"] = "Number",
-}
-
-for source, target in pairs(link_highlights) do
-    vim.api.nvim_set_hl(0, source, { link = target })
-end
+vim.cmd.colorscheme("custom")
 
 -- define this in WSL so clipboard is set correcty
 -- needed to fix startup performance issue
