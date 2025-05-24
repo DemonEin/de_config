@@ -332,6 +332,10 @@ for _, map in ipairs({
     { "<Leader>hS", gitsigns.stage_buffer },
     { "<Leader>hd", gitsigns.diffthis },
     { "<Leader>hD", function() gitsigns.diffthis("~") end },
+    { "<Leader>.", function()
+        vim.cmd.wa()
+        vim.cmd.source(vim.fn.stdpath("config") .. "/init.lua")
+    end },
 }) do
     vim.keymap.set("n", map[1], map[2])
 end
