@@ -23,16 +23,6 @@ yellow = "#F9E2AF"
 cursor = "#F5E0DC"
 text = "#1E1E2E"
 
-[colors.dim]
-black = "#45475A"
-blue = "#89B4FA"
-cyan = "#94E2D5"
-green = "#A6E3A1"
-magenta = "#F5C2E7"
-red = "#F38BA8"
-white = "#BAC2DE"
-yellow = "#F9E2AF"
-
 [colors.hints.end]
 background = "#A6ADC8"
 foreground = "#1E1E2E"
