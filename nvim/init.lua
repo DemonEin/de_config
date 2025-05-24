@@ -234,6 +234,14 @@ for _, map in ipairs({
     end },
     { "<C-n>", ":silent cn<cr>" },
     { "<C-e>", ":silent cp<cr>" },
+    { "<C-c>", function() 
+        vim.o.termguicolors = not vim.o.termguicolors
+        if vim.o.termguicolors then
+            print("enabled terminal gui colors")
+        else
+            print("disabled terminal gui colors")
+        end
+    end },
     { "<C-k>", "<C-w>k" },
     { "<C-h>", "<C-w>h" },
     { "<C-.>", function()
