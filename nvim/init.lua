@@ -280,6 +280,31 @@ for _, map in ipairs({
         end
     end },
     { "<Leader>ca", vim.lsp.buf.code_action },
+    { "<Leader>co", function()
+        local colorschemes = {
+            "custom",
+            "catppuccin-mocha",
+        }
+        local current_scheme_index = nil
+        for index, scheme in ipairs(colorschemes) do
+            if vim.g.colors_name == scheme then
+                current_scheme_index = index
+                break
+            end
+        end
+
+        local next_scheme_index
+        if current_scheme_index ~= nil then
+            next_scheme_index = current_scheme_index + 1
+            if (next_scheme_index > #colorschemes) then
+                next_scheme_index = 1
+            end
+        else
+            next_scheme_index = 1
+        end
+
+        vim.cmd.colorscheme(colorschemes[next_scheme_index])
+    end },
     { "<Leader>D", vim.lsp.buf.type_definition },
     { "<Leader>v", function() require("gitsigns").toggle_deleted() end },
     { "<Leader>h", ":vert h " },

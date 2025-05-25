@@ -166,3 +166,5 @@ local highlights = {
 for highlight_group, definition in pairs(highlights) do
     vim.api.nvim_set_hl(0, highlight_group, definition)
 end
+
+vim.g.colors_name = "custom"
