@@ -137,9 +137,17 @@ local highlights = {
     ["@function.builtin"] = { link = "@function" },
     ["@constructor"] = {},
 
+    ["@keyword.modifier"] = { link = "@type" },
+    ["@keyword.operator"] = { link = "@operator" },
+    -- make c and cpp includes PreProc because they are
+    ["@keyword.import.c"] = { link = "PreProc" },
+    ["@keyword.import.cpp"] = { link = "PreProc" },
+    ["@keyword.operator"] = { link = "@operator" },
+    ["@keyword.conditional.ternary"] = { link = "@operator" },
+    ["@keyword.directive"] = { link = "PreProc" },
+
     -- lsp
     ["@lsp.type.macro"] = { link = "Macro" },
-    ["@lsp.mod.readonly"] = { link = "Constant" },
 
     -- diagnostics
     ["DiagnosticError"] = { fg = red },
