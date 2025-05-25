@@ -324,15 +324,12 @@ for uppercase_ascii=65,90 do
 end
 
 for _, autocommand in ipairs({
-
     { "TermOpen", "*", function()
         vim.keymap.set("t", "<Esc>", "<c-\\><c-n>", { buffer = true })
-    end },
-    { "TermOpen", "*", vim.cmd.startinsert },
-    { "TermOpen", "*", function()
         vim.wo.listchars = ""
         vim.wo.number = false
         vim.wo.relativenumber = false
+        vim.cmd.startinsert()
     end },
 
     { "FileType", "gitcommit,text,markdown", function() vim.o.spell = true end },
