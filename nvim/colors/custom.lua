@@ -1,3 +1,53 @@
+-- helpers for generating colors
+-- TODO inline generated colors and keep these functions for experimenting
+local color_mix
+do
+    local color_to_color_table = function(color_string)
+        return {
+            red = tonumber(string.sub(color_string, 2, 3), 16),
+            green = tonumber(string.sub(color_string, 4, 5), 16),
+            blue = tonumber(string.sub(color_string, 6, 7), 16),
+        }
+    end
+
+    local color_table_sum = function(color_1, color_2)
+        return {
+            red = color_1.red + color_2.red,
+            green = color_1.green + color_2.green,
+            blue = color_1.blue + color_2.blue,
+        }
+    end
+
+    local color_table_product = function(color, scalar)
+        return {
+            red = color.red * scalar,
+            green = color.green * scalar,
+            blue = color.blue * scalar,
+        }
+    end
+
+    local color_table_mix = function(top, bottom, top_opacity)
+        assert(top_opacity <= 1)
+        assert(top_opacity >= 0)
+        return color_table_sum(
+            color_table_product(top, top_opacity),
+            color_table_product(bottom, 1 - top_opacity))
+    end
+
+    local color_table_to_color = function(color)
+        return "#" .. string.format("%02x", color.red)
+            .. string.format("%02x", color.green)
+            .. string.format("%02x", color.blue)
+    end
+
+    color_mix = function(top, bottom, top_opacity)
+        return color_table_to_color(
+            color_table_mix(color_to_color_table(top),
+            color_to_color_table(bottom), top_opacity)
+        )
+    end
+end
+
 -- colors from catpuccin mocha
 -- trailing comments give the color's name in catpuccin if different than
 -- the variable name
@@ -31,6 +81,10 @@ local highlights = {
     ["Directory"] = { fg = cyan },
     ["Normal"] = { fg = white, bg = background },
     ["LineNr"] = { fg = "#45475a" }, -- Surface 1
+
+    ["DiffDelete"] = { bg = color_mix(red, background, 0.15) },
+    ["DiffAdd"] = { bg = color_mix(green, background, 0.15) },
+    -- TODO add other diff colors
 
     -- vim syntax
     ["Comment"] = { fg = "#9399b2", italic = false },
