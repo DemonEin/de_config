@@ -68,6 +68,7 @@ local highlights = {
     ["@variable"] = { link = "Identifier" },
     ["@variable.builtin"] = { link = "@variable" },
     ["@variable.parameter.builtin"] = { link = "@variable.parameter" },
+    ["@variable.member"] = { fg = lavender },
 
     ["@constant.builtin"] = { link = "@constant" },
 
@@ -77,7 +78,7 @@ local highlights = {
     ["@type.builtin"] = { link = "@type" },
 
     ["@attribute.builtin"] = { link = "@attribute" },
-    ["@property"] = { fg = lavender },
+    ["@property"] = { link = "@variable.member" },
 
     ["@function.builtin"] = { link = "@function" },
     ["@constructor"] = {},
