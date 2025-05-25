@@ -109,19 +109,6 @@ vim.filetype.add({
     }
 })
 
-require("lualine").setup({
-    sections = {
-        lualine_a = { function()
-            return string.gsub(vim.fn.getcwd(), "^" .. vim.fn.getenv("HOME"), "~")
-        end },
-        lualine_b = {"branch"},
-        lualine_c = {"filename"},
-        lualine_x = {},
-        lualine_y = {"progress"},
-        lualine_z = {"location"},
-    },
-})
-
 vim.cmd.colorscheme("custom")
 
 -- define this in WSL so clipboard is set correcty
