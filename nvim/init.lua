@@ -93,14 +93,14 @@ require("nvim-treesitter.configs").setup({
 
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.brightscript = {
-  install_info = {
-    url = "~/tree-sitter-brightscript", -- local path or git repo
-    files = {"src/parser.c"}, -- note that some parsers also require src/scanner.c or src/scanner.cc
-    -- optional entries:
-    branch = "main", -- default branch in case of git repo if different from master
-    generate_requires_npm = false, -- if stand-alone parser without npm dependencies
-    requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
-  },
+    install_info = {
+        url = "~/tree-sitter-brightscript", -- local path or git repo
+        files = {"src/parser.c"}, -- note that some parsers also require src/scanner.c or src/scanner.cc
+        -- optional entries:
+        branch = "main", -- default branch in case of git repo if different from master
+        generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+        requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
+    },
 }
 
 vim.filetype.add({
@@ -304,8 +304,8 @@ vim.keymap.set("ca", "H", "vert h")
 
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
-    char_uppercase = string.char(uppercase_ascii)
-    char_lowercase = string.char(uppercase_ascii + 32)
+    local char_uppercase = string.char(uppercase_ascii)
+    local char_lowercase = string.char(uppercase_ascii + 32)
     vim.keymap.set("n", "m" .. char_lowercase, "m" .. char_uppercase)
     vim.keymap.set("n", "'" .. char_lowercase, "'" .. char_uppercase)
 end
