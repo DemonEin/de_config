@@ -82,7 +82,7 @@ local highlights = {
 
     ["Title"] = { bold = true },
     ["SpecialKey"] = { fg = pink },
-    ["Directory"] = { fg = cyan },
+    ["Directory"] = { fg = blue },
     ["Normal"] = { fg = white, bg = background },
     ["LineNr"] = { fg = subtle },
     ["NormalFloat"] = { bg = secondary_background },
