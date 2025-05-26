@@ -65,6 +65,7 @@ local flamingo = "#f2cdcd"
 
 local background = "#1e1e2e" -- Base
 local secondary_background = "#181825" -- Mantle
+local subtle = "#45475a" -- Surface 1
 
  -- the the following sets to highlights rely on defaults so reset them first
 vim.cmd.highlight("clear")
@@ -83,8 +84,9 @@ local highlights = {
     ["SpecialKey"] = { fg = pink },
     ["Directory"] = { fg = cyan },
     ["Normal"] = { fg = white, bg = background },
-    ["LineNr"] = { fg = "#45475a" }, -- Surface 1
+    ["LineNr"] = { fg = subtle },
     ["NormalFloat"] = { bg = secondary_background },
+    ["Visual"] = { bg = subtle, bold = true },
 
     ["DiffDelete"] = { bg = color_mix(red, background, 0.15) },
     ["DiffAdd"] = { bg = color_mix(green, background, 0.15) },
@@ -167,6 +169,9 @@ local highlights = {
 
     ["StatusLine"] = { bg = secondary_background },
     ["Folded"] = { bg = secondary_background },
+
+    -- telescope
+    ["TelescopeBorder"] = { fg = blue },
 }
 for highlight_group, definition in pairs(highlights) do
     vim.api.nvim_set_hl(0, highlight_group, definition)
