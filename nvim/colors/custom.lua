@@ -61,10 +61,13 @@ local cyan = "#89dceb" -- Sky
 local lavender = "#b4befe"
 local yellow = "#f9e2af"
 local pink = "#f5c2e7"
+local flamingo = "#f2cdcd"
 
 local background = "#1e1e2e" -- Base
 local secondary_background = "#181825" -- Mantle
 
+ -- the the following sets to highlights rely on defaults so reset them first
+vim.cmd.highlight("clear")
 
 local highlights = {
     ["ErrorMsg"] = { link = "DiagnosticError" },
@@ -81,6 +84,7 @@ local highlights = {
     ["Directory"] = { fg = cyan },
     ["Normal"] = { fg = white, bg = background },
     ["LineNr"] = { fg = "#45475a" }, -- Surface 1
+    ["NormalFloat"] = { bg = secondary_background },
 
     ["DiffDelete"] = { bg = color_mix(red, background, 0.15) },
     ["DiffAdd"] = { bg = color_mix(green, background, 0.15) },
@@ -147,6 +151,7 @@ local highlights = {
     ["@keyword.directive"] = { link = "PreProc" },
 
     -- lsp
+    ["@lsp.type.interface"] = { fg = flamingo },
     ["@lsp.type.macro"] = { link = "Macro" },
 
     -- diagnostics
