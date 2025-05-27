@@ -87,6 +87,7 @@ local highlights = {
     ["LineNr"] = { fg = subtle },
     ["NormalFloat"] = { bg = secondary_background },
     ["Visual"] = { bg = subtle, bold = true },
+    ["EndOfBuffer"] = { fg = background }, -- to make this hidden
 
     ["DiffDelete"] = { bg = color_mix(red, background, 0.15) },
     ["DiffAdd"] = { bg = color_mix(green, background, 0.15) },
