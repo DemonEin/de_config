@@ -21,8 +21,6 @@ source ~/.bashrc
 
 rm -r ~/.config/nvim
 ln -s $SCRIPT_DIR/nvim ~/.config/nvim
-rm -r ~/.config/i3
-ln -s $SCRIPT_DIR/i3 ~/.config/i3
 ln -s $SCRIPT_DIR/awesome ~/.config/awesome
 ln -s $SCRIPT_DIR/git ~/.config/git
 ln -s $SCRIPT_DIR/alacritty.toml ~/.config/alacritty.toml
