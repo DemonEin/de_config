@@ -9,22 +9,19 @@ local theme = {}
 
 theme.font = "sans 8"
 
-theme.bg_normal = "#222222"
-theme.bg_focus = "#535d6c"
+-- color names are from the catppuccin mocha palette
+theme.bg_normal = "#11111b" -- Crust
+theme.bg_focus = "#45475a" -- Surface 1
 theme.bg_urgent = "#ff0000"
-theme.bg_minimize = "#444444"
+theme.bg_minimize = theme.bg_normal
 theme.bg_systray = theme.bg_normal
 
-theme.fg_normal = "#aaaaaa"
-theme.fg_focus = "#ffffff"
-theme.fg_urgent = "#ffffff"
-theme.fg_minimize = "#ffffff"
+theme.fg_normal = "#cdd6f4" -- Text
+theme.fg_focus = theme.fg_normal
+theme.fg_urgent = theme.fg_normal
+theme.fg_minimize = theme.fg_normal
 
 theme.useless_gap = dpi(0)
-theme.border_width = dpi(1)
-theme.border_normal = "#000000"
-theme.border_focus = "#535d6c"
-theme.border_marked = "#91231c"
 
 -- There are other variable sets
 -- overriding the default one when
