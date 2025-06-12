@@ -67,6 +67,8 @@ local background = "#1e1e2e" -- Base
 local secondary_background = "#181825" -- Mantle
 local subtle = "#45475a" -- Surface 1
 
+local mixed_yellow = color_mix(yellow, background, 0.15)
+
  -- the the following sets to highlights rely on defaults so reset them first
 vim.cmd.highlight("clear")
 
@@ -90,8 +92,9 @@ local highlights = {
     ["EndOfBuffer"] = { fg = background }, -- to make this hidden
 
     ["DiffDelete"] = { bg = color_mix(red, background, 0.15) },
+    ["DiffChange"] = { bg = mixed_yellow },
     ["DiffAdd"] = { bg = color_mix(green, background, 0.15) },
-    -- TODO add other diff colors
+    ["DiffText"] = { bg = mixed_yellow, bold = true },
 
     -- vim syntax
     ["Comment"] = { fg = "#9399b2", italic = false },
