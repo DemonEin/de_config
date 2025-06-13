@@ -128,6 +128,7 @@ vim.o.autowriteall = true
 vim.o.cmdheight = 0 -- if removing, search for 'cmdheight' to see things that relate
                     -- and might have to be changed
 -- vim.o.colorcolumn = '80'
+vim.o.diffopt = "internal,filler,closeoff,linematch:40,foldcolumn:0,vertical"
 vim.o.expandtab = true
 vim.o.fillchars = "diff: "
 vim.o.foldlevel = 9999
