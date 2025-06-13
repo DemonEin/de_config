@@ -1,10 +1,12 @@
 [diff]
 	tool = nvimdiff
 [merge]
-	tool = nvimdiff
+	tool = nvimdiff2
 	autoStash = true
 [difftool]
 	prompt = false
+[mergetool]
+	keepBackup = false
 [core]
 	editor = nvim
 [submodule]
