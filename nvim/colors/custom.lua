@@ -65,6 +65,7 @@ local flamingo = "#f2cdcd"
 
 local background = "#1e1e2e" -- Base
 local secondary_background = "#181825" -- Mantle
+local tertiary_background = "#11111b" -- Crust
 local subtle = "#45475a" -- Surface 1
 
 local mixed_yellow = color_mix(yellow, background, 0.15)
@@ -88,7 +89,9 @@ local highlights = {
     ["Normal"] = { fg = white, bg = background },
     ["LineNr"] = { fg = subtle },
     ["NormalFloat"] = { bg = secondary_background },
+    ["WinSeparator"] = { fg = tertiary_background },
     ["Visual"] = { bg = subtle, bold = true },
+    ["QuickFixLine"] = { link = "Visual" },
     ["EndOfBuffer"] = { fg = background }, -- to make this hidden
 
     ["DiffDelete"] = { bg = color_mix(red, background, 0.15) },
