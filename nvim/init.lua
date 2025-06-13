@@ -299,6 +299,10 @@ for _, map in ipairs({
     { "<Leader>hp", gitsigns.preview_hunk },
     { "<Leader>hb", function() gitsigns.blame_line({ full = true }) end },
     { "<Leader>hu", gitsigns.undo_stage_hunk },
+    { "<Leader>hq", function()
+        gitsigns.setqflist("all", { open = false })
+        vim.cmd.crewind()
+    end },
     { "<Leader>hr", gitsigns.reset_hunk },
     { "<Leader>hR", gitsigns.reset_buffer },
     { "<Leader>hs", gitsigns.stage_hunk },
