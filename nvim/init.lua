@@ -296,7 +296,6 @@ for _, map in ipairs({
         vim.cmd.colorscheme(colorschemes[next_scheme_index])
     end },
     { "<Leader>D", vim.lsp.buf.type_definition },
-    { "<Leader>h", ":vert h " },
     { "<Leader>hp", gitsigns.preview_hunk },
     { "<Leader>hb", function() gitsigns.blame_line({ full = true }) end },
     { "<Leader>hu", gitsigns.undo_stage_hunk },
