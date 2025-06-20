@@ -10,7 +10,7 @@ PS1='\[\e[34m\]\w\[\e[0m\]$( if branch=$(git branch --show-current 2> /dev/null)
 export MANPAGER='nvim +Man!'
 
 de() {
-    source ~/de_config/.de_bashrc
+    source ~/de_config/bashrc.sh
 }
 export -f de
 

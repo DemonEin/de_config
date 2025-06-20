@@ -2,19 +2,19 @@
 
 # assumes git and nvim are on $PATH
 
-# add source .de_bashrc to .bashrc
+# add source bashrc.sh to .bashrc
 # following line copied from https://stackoverflow.com/questions/59895
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-SOURCE_DE_BASH="source $SCRIPT_DIR/.de_bashrc"
+SOURCE_DE_BASH="source $SCRIPT_DIR/bashrc.sh"
 
 contains_config=$(grep "$SOURCE_DE_BASH" $HOME/.bashrc)
 if [ -z "${contains_config}" ]; then
-    # does not source .de_bashrc
+    # does not source bashrc.sh
    echo $SOURCE_DE_BASH >> $HOME/.bashrc 
    $SOURCE_DE_BASH
 else
-    echo ".bashrc already sources .de_bashrc - skipping"
+    echo ".bashrc already sources bashrc.sh - skipping"
 fi
 
 source ~/.bashrc
