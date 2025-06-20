@@ -47,6 +47,20 @@ endat() {
     done
 }
 
+mksh() {
+    if [ -z "$1" ]; then
+        echo error: file name not specified
+        return 1
+    elif [ -a "$1" ]; then
+        echo error: file exists
+        return 1
+    else
+        echo '#!/bin/bash' > "$1"
+        chmod a+x "$1"
+        nvim "$1"
+    fi
+}
+
 # removes trailing whitespace in the git diff between the worktree and the index
 cleanwhitespace() {
     for FILE_LINE in $( git diff --check | rg '(.*):' -or '$1' ); do
