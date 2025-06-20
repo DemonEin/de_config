@@ -31,6 +31,8 @@ alias qwerty="setxkbmap us"
 alias clip="xclip -selection c"
 alias update="$HOME/de_config/update.sh"
 alias down="cd ~/Downloads"
+alias ls="ls --color=auto"
+alias grep="grep --color=auto"
 
 TASK_DIR="$HOME/tasks"
 
