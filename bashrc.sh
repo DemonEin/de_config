@@ -18,7 +18,17 @@ alias vim="nvim"
 alias v="nvim"
 # TODO change
 alias t="nvim . \"+:Telescope find_files\""
+
 alias g="git"
+alias gs="git status"
+alias gd="git diff"
+alias gc="git commit"
+alias gp="git push"
+alias gu="git pull"
+alias gl="git log"
+alias gb="git branch"
+alias gsw="git switch"
+
 alias wip="git commit -a -m wip"
 # I could make this check whether the previous commit has the message "wip"
 alias uwip="git reset HEAD~"
