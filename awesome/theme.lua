@@ -22,6 +22,7 @@ theme.fg_urgent = theme.fg_normal
 theme.fg_minimize = theme.fg_normal
 
 theme.useless_gap = dpi(0)
+theme.border_width = dpi(1)
 
 -- There are other variable sets
 -- overriding the default one when
