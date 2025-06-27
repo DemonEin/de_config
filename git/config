@@ -1,5 +1,10 @@
+[advice]
+    addEmptyPathspec = false
+    statusHints = false
 [diff]
 	tool = nvimdiff
+[init]
+    defaultBranch = main
 [merge]
 	tool = nvimdiff2
 	autoStash = true
@@ -17,5 +22,8 @@
 	fetchJobs = 0
 [push]
 	autoSetupRemote = true
+[status]
+    branch = true
+    showUntrackedFiles = all
 [rebase]
 	autoStash = true

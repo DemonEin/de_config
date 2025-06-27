@@ -20,7 +20,7 @@ alias v="nvim"
 alias t="nvim . \"+:Telescope find_files\""
 
 alias g="git"
-alias gs="git status"
+alias gs="git status --short"
 alias gd="git diff"
 alias gc="git commit"
 alias gp="git push"
