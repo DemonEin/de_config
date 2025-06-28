@@ -1,8 +1,17 @@
 [advice]
     addEmptyPathspec = false
     statusHints = false
+[branch]
+    sort = -committerdate
+[color "decorate"]
+    HEAD = red
+    branch = blue
+    tag = yellow
+    remoteBranch = magenta
 [diff]
 	tool = nvimdiff
+    renames = true
+    interHunkContext = 10
 [init]
     defaultBranch = main
 [merge]
