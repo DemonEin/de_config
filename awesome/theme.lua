@@ -11,7 +11,7 @@ theme.font = "sans 8"
 
 -- color names are from the catppuccin mocha palette
 theme.bg_normal = "#11111b" -- Crust
-theme.bg_focus = "#45475a" -- Surface 1
+theme.bg_focus = "#1e1e2e" -- Base
 theme.bg_urgent = "#ff0000"
 theme.bg_minimize = theme.bg_normal
 theme.bg_systray = theme.bg_normal
