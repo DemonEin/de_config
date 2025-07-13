@@ -16,8 +16,6 @@ export -f de
 
 alias vim="nvim"
 alias v="nvim"
-# TODO change
-alias t="nvim . \"+:Telescope find_files\""
 
 alias g="git"
 alias gs="git status --short"
