@@ -285,54 +285,6 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey },
-        "n",
-        function()
-            if not increment_through_clients_satisfying(function(c)
-                return c.class == shell_class
-            end) then
-                awful.spawn(shell_command)
-            end
-        end,
-        { description = "Increment through shells in current context", group = "client" }
-    ),
-    awful.key(
-        { modkey },
-        "e",
-        function()
-            if not increment_through_clients_satisfying(function(c)
-                return c.class == browser_class
-            end) then
-                awful.spawn(browser_command)
-            end
-        end,
-        { description = "Increment through browsers in current context", group = "client" }
-    ),
-    awful.key(
-        { modkey },
-        "o",
-        function()
-            if not increment_through_clients_satisfying(function(c)
-                return c.class == editor_class
-            end) then
-                awful.spawn(editor_command)
-            end
-        end,
-        { description = "Increment through editors in current context", group = "client" }
-    ),
-    awful.key(
-        { modkey },
-        "i",
-        function()
-            increment_through_clients_satisfying(function(c)
-                return c.class ~= shell_class
-                    and c.class ~= browser_class
-                    and c.class ~= editor_class
-            end)
-        end,
-        { description = "Increment through other clients current context", group = "client" }
-    ),
-    awful.key(
-        { modkey },
         "l",
         function()
             awful.spawn(shell_command)
@@ -511,6 +463,96 @@ globalkeys = gears.table.join(
         { description = "show the menubar", group = "launcher" }
     )
 )
+
+do
+    local increment_index = nil
+    local current_filter = nil
+
+    local cycle_clients_in_history_order = function(filter, spawn_command)
+        if filter ~= current_filter then
+            if awful.client.focus.history.get(screen.primary, 0, filter) ~= client.focus then
+                increment_index = 0
+            else
+                increment_index = 1
+            end
+            current_filter = filter
+        end
+
+        c = awful.client.focus.history.get(screen.primary, increment_index, filter)
+        if c then
+            c:jump_to()
+            increment_index = increment_index + 1
+        else
+            c = awful.client.focus.history.get(screen.primary, 0, filter)
+            if c then
+                c:jump_to()
+            else
+                if spawn_command then
+                    awful.spawn(spawn_command)
+                end
+            end
+            increment_index = 1
+        end
+    end
+
+    awful.keygrabber({
+        keybindings = {
+            {
+                { modkey },
+                "n",
+                function()
+                    cycle_clients_in_history_order(function(c)
+                        return c.class == shell_class
+                    end, shell_command)
+                end,
+                { description = "Cycle through shells in current context", group = "client" }
+            },
+            {
+                { modkey },
+                "e",
+                function()
+                    cycle_clients_in_history_order(function(c)
+                        return c.class == browser_class
+                    end, brower_command)
+                end,
+                { description = "Cycle through browsers in current context", group = "client" }
+            },
+            {
+                { modkey },
+                "i",
+                function()
+                    cycle_clients_in_history_order(function(c)
+                        return c.class ~= shell_class
+                            and c.class ~= browser_class
+                            and c.class ~= editor_class
+                    end)
+                end,
+                { description = "Cycle through other clients in current context", group = "client" }
+            },
+            {
+                { modkey },
+                "o",
+                function()
+                    cycle_clients_in_history_order(function(c)
+                        return c.class == editor_class
+                    end, editor_command)
+                end,
+                { description = "Cycle through other clients in current context", group = "client" }
+            },
+        },
+        stop_key = modkey,
+        stop_event = "release",
+        start_callback = function()
+            awful.client.focus.history.disable_tracking()
+            current_filter = nil
+        end,
+        stop_callback = function()
+            awful.client.focus.history.enable_tracking()
+            awful.client.focus.history.add(client.focus)
+        end,
+        export_keybindings = true,
+    })
+end
 
 clientkeys = gears.table.join(
     awful.key(
