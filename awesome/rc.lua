@@ -47,6 +47,14 @@ do
 end
 -- }}}
 
+local debug_log = function(text)
+    naughty.notify({
+        preset = naughty.config.presets.info,
+        title = "debug",
+        text = text,
+    })
+end
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
@@ -148,11 +156,19 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+-- invariants that are maintained (except for transient state)
+--     - all clients have one tag
+--     - when one client is visible the fullscreen tag is active
+--     - one or zero tags are selected
+
+local fullscreen_tag = awful.tag.add("fullscreen", {
+    screen = screen.primary,
+    layout = awful.layout.suit.max,
+})
+fullscreen_tag:view_only()
+
 awful.screen.connect_for_each_screen(function(s)
     set_wallpaper()
-
-    -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -389,6 +405,16 @@ globalkeys = gears.table.join(
         end,
         { description = "go back", group = "client" }
     ),
+    awful.key(
+        { modkey },
+        "`",
+        function()
+            for _, c in ipairs(client.get()) do
+                c:move_to_tag(fullscreen_tag)
+            end
+        end,
+        { description = "make all clients fullscreen", group = "client" }
+    ),
 
     -- Standard program
     awful.key(
@@ -508,7 +534,7 @@ do
     local current_filter = nil
     local focus_order = nil
 
-    local cycle_clients_in_history_order = function(filter, spawn_command)
+    local get_client_in_history_order = function(filter)
         if filter ~= current_filter then
             focus_order = get_clients_by_most_recent_focus(filter)
 
@@ -520,17 +546,78 @@ do
             current_filter = filter
         end
 
-        if #focus_order == 0 then
-            if spawn_command then
-                awful.spawn(spawn_command)
-                current_filter = nil -- this causes focus_order to be reset next time
-            end
-        else
-            focus_order[increment_index]:jump_to()
+        local c = nil
+        if #focus_order > 0 then
+            c = focus_order[increment_index]
             increment_index = increment_index + 1
             if increment_index > #focus_order then
                 increment_index = 1
             end
+        end
+
+        return c
+    end
+
+    local cycle_clients_in_history_order = function(filter, spawn_command)
+        c = get_client_in_history_order(filter)
+        if c then
+            c:jump_to()
+        elseif spawn_command then
+            awful.spawn(spawn_command)
+            current_filter = nil -- this causes focus_order to be reset next time
+        end
+    end
+
+    local temporary_client = nil
+    local multiple_tag = nil
+
+    local establish_multiple_tag = function()
+        if multiple_tag then 
+            return
+        end
+
+        if client.focus.first_tag == fullscreen_tag then
+            multiple_tag = awful.tag.add("multiple", {
+                screen = screen.primary,
+                volatile = true,
+                layout = awful.layout.suit.spiral.dwindle,
+            })
+            multiple_tag:connect_signal("untagged", function(t)
+                clients = t:clients()
+                if #clients == 1 then
+                    clients[1]:move_to_tag(fullscreen_tag)
+                    -- tag will be automatically deleted because it is volatile
+                end
+            end)
+
+            client.focus:move_to_tag(multiple_tag)
+        else
+            multiple_tag = client.focus.first_tag
+        end
+
+        multiple_tag:view_only()
+    end
+
+    local cycle_clients_in_history_order_multi = function(filter, spawn_command)
+        c = get_client_in_history_order(filter)
+        if c then
+            if c ~= client.focus then
+                establish_multiple_tag()
+
+                if c.first_tag ~= multiple_tag then
+                    c:toggle_tag(multiple_tag)
+                end
+                if temporary_client then
+                    temporary_client:toggle_tag(multiple_tag)
+                end
+                temporary_client = c
+
+                c:jump_to()
+            end
+        elseif spawn_command then
+            establish_multiple_tag()
+            awful.spawn(spawn_command, { tag = multiple_tag })
+            current_filter = nil -- this causes focus_order to be reset next time
         end
     end
 
@@ -578,6 +665,48 @@ do
                 end,
                 { description = "Cycle through other clients in current context", group = "client" }
             },
+            {
+                { modkey, "Mod1" },
+                "n",
+                function()
+                    cycle_clients_in_history_order_multi(function(c)
+                        return c.class == shell_class
+                    end, shell_command)
+                end,
+                { description = "Cycle through shells in current context in multi view", group = "client" },
+            },
+            {
+                { modkey, "Mod1" },
+                "e",
+                function()
+                    cycle_clients_in_history_order_multi(function(c)
+                        return c.class == browser_class
+                    end, browser_command)
+                end,
+                { description = "Cycle through browsers in current context in multi view", group = "client" },
+            },
+            {
+                { modkey, "Mod1" },
+                "i",
+                function()
+                    cycle_clients_in_history_order_multi(function(c)
+                        return c.class ~= shell_class
+                            and c.class ~= browser_class
+                            and c.class ~= editor_class
+                    end)
+                end,
+                { description = "Cycle through other clients in current context in multi view", group = "client" },
+            },
+            {
+                { modkey, "Mod1" },
+                "o",
+                function()
+                    cycle_clients_in_history_order_multi(function(c)
+                        return c.class == editor_class
+                    end, editor_command)
+                end,
+                { description = "Cycle through editors in current context in multi view", group = "client" },
+            },
         },
         stop_key = modkey,
         stop_event = "release",
@@ -586,6 +715,12 @@ do
             current_filter = nil
         end,
         stop_callback = function()
+            if temporary_client then
+                temporary_client:move_to_tag(multiple_tag)
+            end
+            temporary_client = nil
+            multiple_tag = nil
+
             track_focus_time = true
             update_current_focus_time()
         end,
