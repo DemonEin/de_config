@@ -241,6 +241,45 @@ local function increment_through_clients_satisfying(filter)
     end
 end
 
+local track_focus_time = true
+local get_clients_by_most_recent_focus
+local update_current_focus_time
+do
+    local client_last_focused_time = {}
+    
+    client.connect_signal("focus", function(c)
+        if track_focus_time then
+            client_last_focused_time[c] = os.time()
+        end
+    end)
+
+    client.connect_signal("unmanage", function(c)
+        client_last_focused_time[c] = nil
+    end)
+
+    get_clients_by_most_recent_focus = function(filter)
+        local result = {}
+
+        for _, c in ipairs(client.get()) do
+            if not filter or filter(c) then
+                table.insert(result, c)
+            end
+        end
+
+        table.sort(result, function(left, right)
+            return (client_last_focused_time[left] or 0) >= (client_last_focused_time[right] or 0)
+        end)
+
+        return result
+    end
+
+    update_current_focus_time = function()
+        if client.focus then
+            client_last_focused_time[client.focus] = os.time()
+        end
+    end
+end
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key(
@@ -467,31 +506,31 @@ globalkeys = gears.table.join(
 do
     local increment_index = nil
     local current_filter = nil
+    local focus_order = nil
 
     local cycle_clients_in_history_order = function(filter, spawn_command)
         if filter ~= current_filter then
-            if awful.client.focus.history.get(screen.primary, 0, filter) ~= client.focus then
-                increment_index = 0
+            focus_order = get_clients_by_most_recent_focus(filter)
+
+            if #focus_order > 1 and focus_order[1] == client.focus then
+                increment_index = 2
             else
                 increment_index = 1
             end
             current_filter = filter
         end
 
-        c = awful.client.focus.history.get(screen.primary, increment_index, filter)
-        if c then
-            c:jump_to()
-            increment_index = increment_index + 1
-        else
-            c = awful.client.focus.history.get(screen.primary, 0, filter)
-            if c then
-                c:jump_to()
-            else
-                if spawn_command then
-                    awful.spawn(spawn_command)
-                end
+        if #focus_order == 0 then
+            if spawn_command then
+                awful.spawn(spawn_command)
+                current_filter = nil -- this causes focus_order to be reset next time
             end
-            increment_index = 1
+        else
+            focus_order[increment_index]:jump_to()
+            increment_index = increment_index + 1
+            if increment_index > #focus_order then
+                increment_index = 1
+            end
         end
     end
 
@@ -543,12 +582,12 @@ do
         stop_key = modkey,
         stop_event = "release",
         start_callback = function()
-            awful.client.focus.history.disable_tracking()
+            track_focus_time = false
             current_filter = nil
         end,
         stop_callback = function()
-            awful.client.focus.history.enable_tracking()
-            awful.client.focus.history.add(client.focus)
+            track_focus_time = true
+            update_current_focus_time()
         end,
         export_keybindings = true,
     })
