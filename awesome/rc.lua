@@ -639,7 +639,7 @@ do
                 function()
                     cycle_clients_in_history_order(function(c)
                         return c.class == browser_class
-                    end, brower_command)
+                    end, browser_command)
                 end,
                 { description = "Cycle through browsers in current context", group = "client" }
             },
