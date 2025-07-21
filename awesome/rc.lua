@@ -409,7 +409,7 @@ do
         multiple_tag:view_only()
     end
 
-    local cycle_clients_in_history_order_multi = function(filter, spawn_command)
+    local cycle_clients_in_history_order_multi = function(filter, spawn)
         c = get_client_in_history_order(filter)
         if c then
             if c ~= client.focus then
