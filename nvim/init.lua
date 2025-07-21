@@ -246,7 +246,6 @@ for _, map in ipairs({
     { "<Leader>b", ":Git blame<cr>" },
     { "<Leader>j", "!$jq<cr>" },
     { "<Leader>r", ":grep '\\b(<C-r><C-w>)\\b'<cr>" },
-    { "<Leader>s", ":wa<cr>:sus<cr>" },
     { "<Leader>t", function() -- run t.sh
         terminal_command = "te de; shopt -s expand_aliases; . t.sh"
 
