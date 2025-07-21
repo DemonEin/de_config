@@ -76,6 +76,7 @@ vim.cmd.highlight("clear")
 local highlights = {
     ["ErrorMsg"] = { link = "DiagnosticError" },
     ["ModeMsg"] = { link = "Normal" },
+    ["MsgArea"] = { link = "StatusLine" },
     ["MoreMsg"] = { link = "Normal" },
     ["Question"] = { link = "Normal" },
     ["QuickFixLine"] = { link = "Normal" },
