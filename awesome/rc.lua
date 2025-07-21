@@ -250,7 +250,32 @@ awful.screen.connect_for_each_screen(function(s)
         },
     }
 end)
--- }}}
+
+local done_callback
+
+local myprompt = awful.widget.prompt({
+    prompt = 'Run: ',
+    done_callback = function()
+        done_callback()
+    end
+})
+
+local popup = awful.popup({
+    widget = myprompt,
+    ontop        = true,
+    placement    = awful.placement.centered,
+    shape        = gears.shape.rectangle,
+    visible = false,
+})
+
+done_callback = function()
+    popup.visible = false
+end
+
+local run_prompt = function()
+    popup.visible = true
+    myprompt:run()
+end
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
@@ -381,7 +406,8 @@ globalkeys = gears.table.join(
     -- Prompt
     awful.key(
         { modkey },
-        "r",function() awful.screen.focused().mypromptbox:run() end,
+        "r",
+        run_prompt,
         { description = "run prompt", group = "launcher" }
     ),
 
