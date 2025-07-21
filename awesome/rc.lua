@@ -60,14 +60,49 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 terminal = "alacritty"
 
-shell_class = "Shell"
-shell_command = "alacritty --class " .. shell_class
+local spawn_shell = function(properties)
+    awful.spawn("alacritty --class Shell", properties)
+end
+local is_shell = function(c)
+    return c.class == "Shell"
+end
 
-editor_class = "Editor"
-editor_command = "alacritty --class " .. editor_class .. " -e " .. (os.getenv("EDITOR") or "nvim")
+local spawn_editor = function(properties)
+    awful.spawn("alacritty --class Editor -e " .. (os.getenv("EDITOR") or "nvim"), properties)
+end
+local is_editor = function(c)
+    return c.class == "Editor"
+end
 
-browser_class = "Google-chrome"
-browser_command = "google-chrome-stable"
+-- can't set google chrome's class so have to store the client instead
+local email_client = nil
+local spawn_email = function(properties)
+    -- workaround to implement a callback since Google Chrome does not play nicely in X :(
+    local callback
+    callback = function(c)
+        email_client = c
+        client.disconnect_signal("manage", callback)
+    end
+    client.connect_signal("manage", callback)
+    awful.spawn("google-chrome-stable --new-window https://mail.google.com/mail/u/0/#inbox", properties)
+end
+local is_email = function(c)
+    return c == email_client
+end
+
+local spawn_browser = function(properties)
+    awful.spawn("google-chrome-stable", properties)
+end
+local is_browser = function(c)
+    return c.class == "Google-chrome" and c ~= email_client
+end
+
+local is_other = function(c)
+    return not is_shell(c)
+        and not is_browser(c)
+        and not is_editor(c)
+        and not is_email(c)
+end
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -306,25 +341,19 @@ globalkeys = gears.table.join(
     awful.key(
         { modkey },
         "l",
-        function()
-            awful.spawn(shell_command)
-        end,
+        spawn_shell,
         { description = "Create shell", group = "client" }
     ),
     awful.key(
         { modkey },
         "u",
-        function()
-            awful.spawn(browser_command)
-        end,
+        spawn_browser,
         { description = "Create browser", group = "client" }
     ),
     awful.key(
         { modkey },
         "y",
-        function()
-            awful.spawn(editor_command)
-        end,
+        spawn_editor,
         { description = "Create editor", group = "client" }
     ),
     awful.key(
@@ -407,12 +436,12 @@ do
         return c
     end
 
-    local cycle_clients_in_history_order = function(filter, spawn_command)
+    local cycle_clients_in_history_order = function(filter, spawn)
         c = get_client_in_history_order(filter)
         if c then
             c:jump_to()
-        elseif spawn_command then
-            awful.spawn(spawn_command)
+        elseif spawn then
+            spawn()
             current_filter = nil -- this causes focus_order to be reset next time
         end
     end
@@ -463,9 +492,9 @@ do
 
                 c:jump_to()
             end
-        elseif spawn_command then
+        elseif spawn then
             establish_multiple_tag()
-            awful.spawn(spawn_command, { tag = multiple_tag })
+            spawn({ tag = multiple_tag })
             current_filter = nil -- this causes focus_order to be reset next time
         end
     end
@@ -476,9 +505,7 @@ do
                 { modkey },
                 "n",
                 function()
-                    cycle_clients_in_history_order(function(c)
-                        return c.class == shell_class
-                    end, shell_command)
+                    cycle_clients_in_history_order(is_shell, spawn_shell)
                 end,
                 { description = "Cycle through shells in current context", group = "client" }
             },
@@ -486,9 +513,7 @@ do
                 { modkey },
                 "e",
                 function()
-                    cycle_clients_in_history_order(function(c)
-                        return c.class == browser_class
-                    end, browser_command)
+                    cycle_clients_in_history_order(is_browser, spawn_browser)
                 end,
                 { description = "Cycle through browsers in current context", group = "client" }
             },
@@ -496,11 +521,7 @@ do
                 { modkey },
                 "i",
                 function()
-                    cycle_clients_in_history_order(function(c)
-                        return c.class ~= shell_class
-                            and c.class ~= browser_class
-                            and c.class ~= editor_class
-                    end)
+                    cycle_clients_in_history_order(is_other)
                 end,
                 { description = "Cycle through other clients in current context", group = "client" }
             },
@@ -508,19 +529,23 @@ do
                 { modkey },
                 "o",
                 function()
-                    cycle_clients_in_history_order(function(c)
-                        return c.class == editor_class
-                    end, editor_command)
+                    cycle_clients_in_history_order(is_editor, spawn_editor)
                 end,
                 { description = "Cycle through other clients in current context", group = "client" }
+            },
+            {
+                { modkey },
+                "h",
+                function()
+                    cycle_clients_in_history_order(is_email, spawn_email)
+                end,
+                { description="Go to email", group="awesome" }
             },
             {
                 { modkey, "Mod1" },
                 "n",
                 function()
-                    cycle_clients_in_history_order_multi(function(c)
-                        return c.class == shell_class
-                    end, shell_command)
+                    cycle_clients_in_history_order_multi(is_shell, spawn_shell)
                 end,
                 { description = "Cycle through shells in current context in multi view", group = "client" },
             },
@@ -528,9 +553,7 @@ do
                 { modkey, "Mod1" },
                 "e",
                 function()
-                    cycle_clients_in_history_order_multi(function(c)
-                        return c.class == browser_class
-                    end, browser_command)
+                    cycle_clients_in_history_order_multi(is_browser, spawn_browser)
                 end,
                 { description = "Cycle through browsers in current context in multi view", group = "client" },
             },
@@ -538,11 +561,7 @@ do
                 { modkey, "Mod1" },
                 "i",
                 function()
-                    cycle_clients_in_history_order_multi(function(c)
-                        return c.class ~= shell_class
-                            and c.class ~= browser_class
-                            and c.class ~= editor_class
-                    end)
+                    cycle_clients_in_history_order_multi(is_other)
                 end,
                 { description = "Cycle through other clients in current context in multi view", group = "client" },
             },
@@ -550,9 +569,7 @@ do
                 { modkey, "Mod1" },
                 "o",
                 function()
-                    cycle_clients_in_history_order_multi(function(c)
-                        return c.class == editor_class
-                    end, editor_command)
+                    cycle_clients_in_history_order_multi(is_editor, spawn_editor)
                 end,
                 { description = "Cycle through editors in current context in multi view", group = "client" },
             },
