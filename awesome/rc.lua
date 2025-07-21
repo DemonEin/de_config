@@ -273,19 +273,28 @@ globalkeys = gears.table.join(
     awful.key(
         { modkey },
         "l",
-        spawn_shell,
+        function()
+            spawn_shell({ tag = fullscreen_tag })
+            fullscreen_tag:view_only()
+        end,
         { description = "Create shell", group = "client" }
     ),
     awful.key(
         { modkey },
         "u",
-        spawn_browser,
+        function()
+            spawn_browser({ tag = fullscreen_tag })
+            fullscreen_tag:view_only()
+        end,
         { description = "Create browser", group = "client" }
     ),
     awful.key(
         { modkey },
         "y",
-        spawn_editor,
+        function()
+            spawn_editor({ tag = fullscreen_tag })
+            fullscreen_tag:view_only()
+        end,
         { description = "Create editor", group = "client" }
     ),
     awful.key(
