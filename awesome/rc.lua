@@ -317,7 +317,7 @@ do
         end
 
         table.sort(result, function(left, right)
-            return (client_last_focused_time[left] or 0) >= (client_last_focused_time[right] or 0)
+            return (client_last_focused_time[left] or 0) > (client_last_focused_time[right] or 0)
         end)
 
         return result
