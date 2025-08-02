@@ -8,14 +8,8 @@ while true; do sleep 60; sudo -v; done &
 trap "kill $!" SIGINT SIGTERM EXIT
 
 PACCACHE_COMMAND='paccache -rk0 --min-atime "4 weeks ago"'
-if command -v yay; then
-    yay \
-        --answerclean None \
-        --answerdiff None \
-        --answeredit None \
-        --answerupgrade None \
-        --removemake \
-        --noconfirm
+if command -v paru; then
+    paru -Syu --combinedupgrade --removemake
     eval "$PACCACHE_COMMAND"
 elif command -v pacman; then
     sudo pacman -Syu --noconfirm
