@@ -262,6 +262,32 @@ do
     end
 end
 
+local establish_multiple_tag = function()
+    local multiple_tag
+
+    if client.focus.first_tag == fullscreen_tag then
+        multiple_tag = awful.tag.add("multiple", {
+            screen = screen.primary,
+            volatile = true,
+            layout = awful.layout.suit.spiral.dwindle,
+        })
+        multiple_tag:connect_signal("untagged", function(t)
+            clients = t:clients()
+            if #clients == 1 then
+                clients[1]:move_to_tag(fullscreen_tag)
+                -- tag will be automatically deleted because it is volatile
+            end
+        end)
+
+        client.focus:move_to_tag(multiple_tag)
+    else
+        multiple_tag = client.focus.first_tag
+    end
+
+    multiple_tag:view_only()
+    return multiple_tag
+end
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key(
@@ -296,6 +322,30 @@ globalkeys = gears.table.join(
             fullscreen_tag:view_only()
         end,
         { description = "Create editor", group = "client" }
+    ),
+    awful.key(
+        { modkey, "Mod1" },
+        "l",
+        function()
+            spawn_shell({ tag = establish_multiple_tag() })
+        end,
+        { description = "Create shell in multiview", group = "client" }
+    ),
+    awful.key(
+        { modkey, "Mod1" },
+        "u",
+        function()
+            spawn_browser({ tag = establish_multiple_tag() })
+        end,
+        { description = "Create browser in multiview", group = "client" }
+    ),
+    awful.key(
+        { modkey, "Mod1" },
+        "y",
+        function()
+            spawn_editor({ tag = establish_multiple_tag() })
+        end,
+        { description = "Create editor in multiview", group = "client" }
     ),
     awful.key(
         { modkey },
@@ -391,38 +441,11 @@ do
     local temporary_client = nil
     local multiple_tag = nil
 
-    local establish_multiple_tag = function()
-        if multiple_tag then 
-            return
-        end
-
-        if client.focus.first_tag == fullscreen_tag then
-            multiple_tag = awful.tag.add("multiple", {
-                screen = screen.primary,
-                volatile = true,
-                layout = awful.layout.suit.spiral.dwindle,
-            })
-            multiple_tag:connect_signal("untagged", function(t)
-                clients = t:clients()
-                if #clients == 1 then
-                    clients[1]:move_to_tag(fullscreen_tag)
-                    -- tag will be automatically deleted because it is volatile
-                end
-            end)
-
-            client.focus:move_to_tag(multiple_tag)
-        else
-            multiple_tag = client.focus.first_tag
-        end
-
-        multiple_tag:view_only()
-    end
-
     local cycle_clients_in_history_order_multi = function(filter, spawn)
         c = get_client_in_history_order(filter)
         if c then
             if c ~= client.focus then
-                establish_multiple_tag()
+                multiple_tag = establish_multiple_tag()
 
                 if c.first_tag ~= multiple_tag then
                     c:toggle_tag(multiple_tag)
@@ -435,7 +458,7 @@ do
                 c:jump_to()
             end
         elseif spawn then
-            establish_multiple_tag()
+            multiple_tag = establish_multiple_tag()
             spawn({ tag = multiple_tag })
             current_filter = nil -- this causes focus_order to be reset next time
         end
