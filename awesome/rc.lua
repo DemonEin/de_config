@@ -467,6 +467,7 @@ do
     awful.keygrabber({
         keybindings = {
             {
+                -- BE AWARE: the keys listed here must be included in allowed_keys
                 { modkey },
                 "n",
                 function()
@@ -556,6 +557,10 @@ do
             update_current_focus_time()
         end,
         export_keybindings = true,
+        -- allowed_keys requires the key to be pressed a second time for the
+        -- normal effect of the key to happen which isn't ideal but it's still
+        -- an improvement over not using allowed_keys at all
+        allowed_keys = { "n", "e", "i", "o" },
     })
 end
 
