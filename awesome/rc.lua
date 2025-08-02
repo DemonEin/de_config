@@ -316,7 +316,7 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey },
-        "y",
+        ";",
         function()
             spawn_editor({ tag = fullscreen_tag })
             fullscreen_tag:view_only()
@@ -341,7 +341,7 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey, "Mod1" },
-        "y",
+        ";",
         function()
             spawn_editor({ tag = establish_multiple_tag() })
         end,
