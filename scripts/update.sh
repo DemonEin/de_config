@@ -7,7 +7,7 @@ sudo -v
 while true; do sleep 60; sudo -v; done &
 trap "kill $!" SIGINT SIGTERM EXIT
 
-PACCACHE_COMMAND='sudo paccache -rk0 --min-atime "4 weeks ago"'
+PACCACHE_COMMAND='sudo paccache -rk2 --min-atime "4 weeks ago" && sudo paccache -ruk0 --min-atime "4 weeks ago"'
 if command -v paru; then
     paru -Syu --combinedupgrade --removemake
     eval "$PACCACHE_COMMAND"
