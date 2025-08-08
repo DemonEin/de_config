@@ -297,7 +297,6 @@ for _, map in ipairs({
     { "<Leader>D", vim.lsp.buf.type_definition },
     { "<Leader>hp", gitsigns.preview_hunk },
     { "<Leader>hb", function() gitsigns.blame_line({ full = true }) end },
-    { "<Leader>hu", gitsigns.undo_stage_hunk },
     { "<Leader>hq", function()
         gitsigns.setqflist("all", { open = false })
         vim.cmd.crewind()
