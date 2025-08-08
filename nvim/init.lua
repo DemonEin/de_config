@@ -305,8 +305,8 @@ for _, map in ipairs({
     { "<Leader>hR", gitsigns.reset_buffer },
     { "<Leader>hs", gitsigns.stage_hunk },
     { "<Leader>hS", gitsigns.stage_buffer },
-    { "<Leader>hd", gitsigns.diffthis },
-    { "<Leader>hD", function() gitsigns.diffthis("~") end },
+    { "<Leader>hd", function() gitsigns.diffthis(nil, { split = "belowright" }) end },
+    { "<Leader>hD", function() gitsigns.diffthis("~", { split = "belowright" }) end },
     { "<Leader>.", function()
         vim.cmd.wa()
         vim.cmd.source(vim.fn.stdpath("config") .. "/init.lua")
