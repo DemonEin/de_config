@@ -340,8 +340,8 @@ for _, autocommand in ipairs({
     { "RecordingEnter", "*", function() vim.o.cmdheight = 1 end },
     { "RecordingLeave", "*", function() vim.o.cmdheight = 0 end },
 
-    { "FocusLost", "*", function() vim.cmd.wa() end },
-    { "VimSuspend", "*", function() vim.cmd.wa() end },
+    { "FocusLost", "*", function() vim.cmd("silent wa") end },
+    { "VimSuspend", "*", function() vim.cmd("silent wa") end },
 }) do
     vim.api.nvim_create_autocmd(autocommand[1], {
         pattern = autocommand[2],
