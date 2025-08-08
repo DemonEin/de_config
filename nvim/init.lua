@@ -167,6 +167,19 @@ local telescope_builtin = require("telescope.builtin")
 
 vim.g.mapleader = " "
 
+local diffthis = function(base)
+    if vim.o.diff then
+        for _, buffer_number in ipairs(vim.tbl_filter(function(buffer_number)
+            return string.match("^gitsigns://", vim.fn.bufname(buffer_number)) ~= nil
+                and vim.wo[vim.fn.bufwinid(buffer_number)].diff
+        end, vim.api.nvim_list_bufs())) do
+            vim.cmd("bdelete " .. string(buffer_number))
+        end
+    else
+        gitsigns.diffthis(base, { split = "belowright" })
+    end
+end
+
 -- normal mode keymaps
 for _, map in ipairs({
     { "gr", vim.lsp.buf.references },
@@ -305,8 +318,8 @@ for _, map in ipairs({
     { "<Leader>hR", gitsigns.reset_buffer },
     { "<Leader>hs", gitsigns.stage_hunk },
     { "<Leader>hS", gitsigns.stage_buffer },
-    { "<Leader>hd", function() gitsigns.diffthis(nil, { split = "belowright" }) end },
-    { "<Leader>hD", function() gitsigns.diffthis("~", { split = "belowright" }) end },
+    { "<Leader>hd", function() diffthis() end },
+    { "<Leader>hD", function() diffthis("~") end },
     { "<Leader>.", function()
         vim.cmd.wa()
         vim.cmd.source(vim.fn.stdpath("config") .. "/init.lua")
