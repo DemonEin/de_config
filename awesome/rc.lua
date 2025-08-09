@@ -68,7 +68,8 @@ local is_shell = function(c)
 end
 
 local spawn_editor = function(properties)
-    awful.spawn("alacritty --class Editor -e " .. (os.getenv("EDITOR") or "nvim"), properties)
+    awful.spawn("alacritty --class Editor -e "
+        .. (os.getenv("EDITOR") or "nvim -c 'lua pick_directory()'"), properties)
 end
 local is_editor = function(c)
     return c.class == "Editor"

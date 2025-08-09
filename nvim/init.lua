@@ -167,6 +167,38 @@ local telescope_builtin = require("telescope.builtin")
 
 vim.g.mapleader = " "
 
+-- telescope picker to change directory
+-- needs to be global so it can be called on startup (see awesome rc.lua)
+pick_directory = function(opts)
+    opts = opts or {}
+    local home_directory = os.getenv("HOME")
+    telescope_pickers.new(opts, {
+        prompt_title = "Change Directory",
+        finder = telescope_finders.new_oneshot_job({
+            "find",
+            home_directory,
+            "-maxdepth",
+            "1", "-mindepth",
+            "1", "-type", "d",
+            "-printf",
+            "%f\\n",
+        }, {}),
+        sorter = telescope_config.file_sorter(opts),
+        attach_mappings = function(prompt_bufnr, map)
+            telescope_actions.select_default:replace(function()
+                telescope_actions.close(prompt_bufnr)
+                vim.cmd("cd "
+                    .. home_directory
+                    .. "/"
+                    .. telescope_action_state.get_selected_entry()[1]
+                )
+                telescope_builtin.find_files()
+            end)
+            return true
+        end,
+    }):find()
+end
+
 -- normal mode keymaps
 for _, map in ipairs({
     { "gr", vim.lsp.buf.references },
@@ -180,35 +212,7 @@ for _, map in ipairs({
     { "<C-p>", telescope_builtin.find_files },
     { "<C-j>", "<C-w>j" },
     { "<C-l>", "<C-w>l" },
-    { "<C-t>", function(opts) -- telescope picker to change directory
-        opts = opts or {}
-        local home_directory = os.getenv("HOME")
-        telescope_pickers.new(opts, {
-            prompt_title = "Change Directory",
-            finder = telescope_finders.new_oneshot_job({
-                "find",
-                home_directory,
-                "-maxdepth",
-                "1", "-mindepth",
-                "1", "-type", "d",
-                "-printf",
-                "%f\\n",
-            }, {}),
-            sorter = telescope_config.file_sorter(opts),
-            attach_mappings = function(prompt_bufnr, map)
-                telescope_actions.select_default:replace(function()
-                    telescope_actions.close(prompt_bufnr)
-                    vim.cmd("cd "
-                        .. home_directory
-                        .. "/"
-                        .. telescope_action_state.get_selected_entry()[1]
-                    )
-                    telescope_builtin.find_files()
-                end)
-                return true
-            end,
-        }):find()
-    end },
+    { "<C-t>", pick_directory },
     { "<C-n>", ":silent cn<cr>" },
     { "<C-e>", ":silent cp<cr>" },
     { "<C-c>", function() 
