@@ -17,8 +17,6 @@ else
     echo ".bashrc already sources bashrc.sh - skipping"
 fi
 
-source ~/.bashrc
-
 rm -r ~/.config/nvim
 ln -T -s $SCRIPT_DIR/nvim ~/.config/nvim
 ln -T -s $SCRIPT_DIR/awesome ~/.config/awesome
