@@ -20,8 +20,8 @@ fi
 source ~/.bashrc
 
 rm -r ~/.config/nvim
-ln -s $SCRIPT_DIR/nvim ~/.config/nvim
-ln -s $SCRIPT_DIR/awesome ~/.config/awesome
-ln -s $SCRIPT_DIR/git ~/.config/git
+ln -T -s $SCRIPT_DIR/nvim ~/.config/nvim
+ln -T -s $SCRIPT_DIR/awesome ~/.config/awesome
+ln -T -s $SCRIPT_DIR/git ~/.config/git
 ln -s $SCRIPT_DIR/alacritty.toml ~/.config/alacritty.toml
-sudo ln -s $SCRIPT_DIR/X11/xorg.conf.d /etc/X11/xorg.conf.d
+sudo ln -T -s $SCRIPT_DIR/X11/xorg.conf.d /etc/X11/xorg.conf.d
