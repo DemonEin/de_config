@@ -192,38 +192,6 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
--- increment through the clients in the current tag that satisfy the filter function
--- with the signature function(client) -> bool
--- returns whether an eligible client was found (and therefore focused)
-local function increment_through_clients_satisfying(filter)
-    -- TODO make this work with multiple tags selected
-    local selected_tag = awful.screen.focused().selected_tag
-    local got_focused_client = false
-    local first_eligible_client = nil
-
-    for _, c in ipairs(client.get()) do
-        if c.first_tag == selected_tag and filter(c) then
-            if got_focused_client then
-                c:jump_to()
-                return true
-            end
-            if c == client.focus then
-                got_focused_client = true
-            end
-            if first_eligible_client == nil then
-                first_eligible_client = c
-            end
-        end
-    end
-
-    if first_eligible_client ~= nil then
-        first_eligible_client:jump_to()
-        return true
-    else
-        return false
-    end
-end
-
 local track_focus_time = true
 local get_clients_by_most_recent_focus
 local update_current_focus_time
