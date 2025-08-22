@@ -261,13 +261,13 @@ end
 globalkeys = gears.table.join(
     awful.key(
         { modkey },
-        "s",
+        "k",
         hotkeys_popup.show_help,
         { description="show help", group="awesome" }
     ),
     awful.key(
         { modkey },
-        "l",
+        "p",
         function()
             spawn_shell({ tag = fullscreen_tag })
             fullscreen_tag:view_only()
@@ -276,7 +276,7 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey },
-        "u",
+        "f",
         function()
             spawn_browser({ tag = fullscreen_tag })
             fullscreen_tag:view_only()
@@ -285,7 +285,7 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey },
-        ";",
+        "q",
         function()
             spawn_editor({ tag = fullscreen_tag })
             fullscreen_tag:view_only()
@@ -294,7 +294,7 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey, "Mod1" },
-        "l",
+        "p",
         function()
             spawn_shell({ tag = establish_multiple_tag() })
         end,
@@ -302,7 +302,7 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey, "Mod1" },
-        "u",
+        "f",
         function()
             spawn_browser({ tag = establish_multiple_tag() })
         end,
@@ -310,7 +310,7 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey, "Mod1" },
-        ";",
+        "q",
         function()
             spawn_editor({ tag = establish_multiple_tag() })
         end,
@@ -341,7 +341,7 @@ globalkeys = gears.table.join(
     -- Prompt
     awful.key(
         { modkey },
-        "r",
+        "d",
         run_prompt,
         { description = "run prompt", group = "launcher" }
     ),
@@ -358,13 +358,6 @@ globalkeys = gears.table.join(
             }
         end,
         { description = "lua execute prompt", group = "awesome" }
-    ),
-    -- Menubar
-    awful.key(
-        { modkey },
-        "p",
-        function() menubar.show() end,
-        { description = "show the menubar", group = "launcher" }
     )
 )
 
@@ -438,7 +431,7 @@ do
             {
                 -- BE AWARE: the keys listed here must be included in allowed_keys
                 { modkey },
-                "n",
+                "t",
                 function()
                     cycle_clients_in_history_order(is_shell, spawn_shell)
                 end,
@@ -446,7 +439,7 @@ do
             },
             {
                 { modkey },
-                "e",
+                "s",
                 function()
                     cycle_clients_in_history_order(is_browser, spawn_browser)
                 end,
@@ -454,7 +447,7 @@ do
             },
             {
                 { modkey },
-                "i",
+                "r",
                 function()
                     cycle_clients_in_history_order(is_other)
                 end,
@@ -462,7 +455,7 @@ do
             },
             {
                 { modkey },
-                "o",
+                "a",
                 function()
                     cycle_clients_in_history_order(is_editor, spawn_editor)
                 end,
@@ -478,7 +471,7 @@ do
             },
             {
                 { modkey, "Mod1" },
-                "n",
+                "t",
                 function()
                     cycle_clients_in_history_order_multi(is_shell, spawn_shell)
                 end,
@@ -486,7 +479,7 @@ do
             },
             {
                 { modkey, "Mod1" },
-                "e",
+                "s",
                 function()
                     cycle_clients_in_history_order_multi(is_browser, spawn_browser)
                 end,
@@ -494,7 +487,7 @@ do
             },
             {
                 { modkey, "Mod1" },
-                "i",
+                "r",
                 function()
                     cycle_clients_in_history_order_multi(is_other)
                 end,
@@ -502,7 +495,7 @@ do
             },
             {
                 { modkey, "Mod1" },
-                "o",
+                "a",
                 function()
                     cycle_clients_in_history_order_multi(is_editor, spawn_editor)
                 end,
@@ -529,7 +522,7 @@ do
         -- allowed_keys requires the key to be pressed a second time for the
         -- normal effect of the key to happen which isn't ideal but it's still
         -- an improvement over not using allowed_keys at all
-        allowed_keys = { "n", "e", "i", "o" },
+        allowed_keys = { "a", "r", "s", "t" },
     })
 end
 
