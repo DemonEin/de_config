@@ -58,8 +58,6 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
-terminal = "alacritty"
-
 local spawn_shell = function(properties)
     awful.spawn("alacritty --class Shell", properties)
 end
@@ -131,10 +129,6 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
 }
--- }}}
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
 local function set_wallpaper()
