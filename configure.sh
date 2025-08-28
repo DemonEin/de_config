@@ -21,5 +21,6 @@ rm -r ~/.config/nvim
 ln -T -s $SCRIPT_DIR/nvim ~/.config/nvim
 ln -T -s $SCRIPT_DIR/awesome ~/.config/awesome
 ln -T -s $SCRIPT_DIR/git ~/.config/git
+ln -T -s $SCRIPT_DIR/kitty ~/.config/kitty
 ln -s $SCRIPT_DIR/alacritty.toml ~/.config/alacritty.toml
 sudo ln -T -s $SCRIPT_DIR/X11/xorg.conf.d /etc/X11/xorg.conf.d
