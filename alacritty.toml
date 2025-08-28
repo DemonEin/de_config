@@ -78,7 +78,7 @@ shape = "Block"
 size = 10.0
 
 [font.normal]
-family = "MonaspiceNeNerdFont"
+family = "MonaspaceNeonNF"
 style = "Regular"
 
 [[keyboard.bindings]]
