@@ -59,14 +59,14 @@ end
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 local spawn_shell = function(properties)
-    awful.spawn("alacritty --class Shell", properties)
+    awful.spawn("kitty --class Shell", properties)
 end
 local is_shell = function(c)
     return c.class == "Shell"
 end
 
 local spawn_editor = function(properties)
-    awful.spawn("alacritty --class Editor -e "
+    awful.spawn("kitty --class Editor "
         .. (os.getenv("EDITOR") or "nvim -c 'lua pick_directory()'"), properties)
 end
 local is_editor = function(c)
