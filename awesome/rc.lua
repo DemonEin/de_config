@@ -316,6 +316,7 @@ globalkeys = gears.table.join(
         function()
             for _, c in ipairs(client.get()) do
                 c:move_to_tag(fullscreen_tag)
+                c.maximized = false -- clients should never be maximized, but this resets it in case they do
             end
         end,
         { description = "make all clients fullscreen", group = "client" }
