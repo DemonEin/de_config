@@ -186,14 +186,14 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
-local track_focus_time = true
+local cycling = false
 local get_clients_by_most_recent_focus
 local update_current_focus_time
 do
     local client_last_focused_time = {}
     
     client.connect_signal("focus", function(c)
-        if track_focus_time then
+        if not cycling then
             client_last_focused_time[c] = os.time()
         end
     end)
@@ -250,6 +250,10 @@ local establish_multiple_tag = function()
     multiple_tag:view_only()
     return multiple_tag
 end
+
+local cycle_clients_in_history_order
+local cycle_clients_in_history_order_multi
+local cycle_stop_callback
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
@@ -353,6 +357,98 @@ globalkeys = gears.table.join(
             }
         end,
         { description = "lua execute prompt", group = "awesome" }
+    ),
+    awful.key(
+        { modkey },
+        "t",
+        function()
+            cycle_clients_in_history_order(is_shell, spawn_shell)
+        end,
+        { description = "Cycle through shells in current context", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "s",
+        function()
+            cycle_clients_in_history_order(is_browser, spawn_browser)
+        end,
+        { description = "Cycle through browsers in current context", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "r",
+        function()
+            cycle_clients_in_history_order(is_other)
+        end,
+        { description = "Cycle through other clients in current context", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "a",
+        function()
+            cycle_clients_in_history_order(is_editor, spawn_editor)
+        end,
+        { description = "Cycle through other clients in current context", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "h",
+        function()
+            cycle_clients_in_history_order(is_email, spawn_email)
+        end,
+        { description="Go to email", group="awesome" }
+    ),
+    awful.key(
+        { modkey, "Mod1" },
+        "t",
+        function()
+            cycle_clients_in_history_order_multi(is_shell, spawn_shell)
+        end,
+        { description = "Cycle through shells in current context in multi view", group = "client" }
+    ),
+    awful.key(
+        { modkey, "Mod1" },
+        "s",
+        function()
+            cycle_clients_in_history_order_multi(is_browser, spawn_browser)
+        end,
+        { description = "Cycle through browsers in current context in multi view", group = "client" }
+    ),
+    awful.key(
+        { modkey, "Mod1" },
+        "r",
+        function()
+            cycle_clients_in_history_order_multi(is_other)
+        end,
+        { description = "Cycle through other clients in current context in multi view", group = "client" }
+    ),
+    awful.key(
+        { modkey, "Mod1" },
+        "a",
+        function()
+            cycle_clients_in_history_order_multi(is_editor, spawn_editor)
+        end,
+        { description = "Cycle through editors in current context in multi view", group = "client" }
+    ),
+
+    -- getting the release of the Mod4/Super_L key needs a workaround found on
+    -- https://github.com/awesomeWM/awesome/issues/169, see psychon and timroes's comments
+    -- yes the Super_L bind that does nothing is needed
+    -- TODO instead of using Super_L base it off the modkey so it is correct with different modkeys
+    awful.key(
+        {},
+        "Super_L",
+        nil,
+        { description = "Cycle through editors in current context in multi view", group = "client" }
+    ),
+    awful.key(
+        { modkey },
+        "Super_L",
+        nil,
+        function() -- called on release
+            cycle_stop_callback()
+        end,
+        { description = "Cycle through editors in current context in multi view", group = "client" }
     )
 )
 
@@ -360,6 +456,13 @@ do
     local increment_index = nil
     local current_filter = nil
     local focus_order = nil
+
+    local cycle_start = function()
+        if not cycling then
+            current_filter = nil
+        end
+        cycling = true
+    end
 
     local get_client_in_history_order = function(filter)
         if filter ~= current_filter then
@@ -385,7 +488,8 @@ do
         return c
     end
 
-    local cycle_clients_in_history_order = function(filter, spawn)
+    cycle_clients_in_history_order = function(filter, spawn)
+        cycle_start()
         c = get_client_in_history_order(filter)
         if c then
             c:jump_to()
@@ -398,7 +502,8 @@ do
     local temporary_client = nil
     local multiple_tag = nil
 
-    local cycle_clients_in_history_order_multi = function(filter, spawn)
+    cycle_clients_in_history_order_multi = function(filter, spawn)
+        cycle_start()
         c = get_client_in_history_order(filter)
         if c then
             if c ~= client.focus then
@@ -421,104 +526,16 @@ do
         end
     end
 
-    awful.keygrabber({
-        keybindings = {
-            {
-                -- BE AWARE: the keys listed here must be included in allowed_keys
-                { modkey },
-                "t",
-                function()
-                    cycle_clients_in_history_order(is_shell, spawn_shell)
-                end,
-                { description = "Cycle through shells in current context", group = "client" }
-            },
-            {
-                { modkey },
-                "s",
-                function()
-                    cycle_clients_in_history_order(is_browser, spawn_browser)
-                end,
-                { description = "Cycle through browsers in current context", group = "client" }
-            },
-            {
-                { modkey },
-                "r",
-                function()
-                    cycle_clients_in_history_order(is_other)
-                end,
-                { description = "Cycle through other clients in current context", group = "client" }
-            },
-            {
-                { modkey },
-                "a",
-                function()
-                    cycle_clients_in_history_order(is_editor, spawn_editor)
-                end,
-                { description = "Cycle through other clients in current context", group = "client" }
-            },
-            {
-                { modkey },
-                "h",
-                function()
-                    cycle_clients_in_history_order(is_email, spawn_email)
-                end,
-                { description="Go to email", group="awesome" }
-            },
-            {
-                { modkey, "Mod1" },
-                "t",
-                function()
-                    cycle_clients_in_history_order_multi(is_shell, spawn_shell)
-                end,
-                { description = "Cycle through shells in current context in multi view", group = "client" },
-            },
-            {
-                { modkey, "Mod1" },
-                "s",
-                function()
-                    cycle_clients_in_history_order_multi(is_browser, spawn_browser)
-                end,
-                { description = "Cycle through browsers in current context in multi view", group = "client" },
-            },
-            {
-                { modkey, "Mod1" },
-                "r",
-                function()
-                    cycle_clients_in_history_order_multi(is_other)
-                end,
-                { description = "Cycle through other clients in current context in multi view", group = "client" },
-            },
-            {
-                { modkey, "Mod1" },
-                "a",
-                function()
-                    cycle_clients_in_history_order_multi(is_editor, spawn_editor)
-                end,
-                { description = "Cycle through editors in current context in multi view", group = "client" },
-            },
-        },
-        stop_key = modkey,
-        stop_event = "release",
-        start_callback = function()
-            track_focus_time = false
-            current_filter = nil
-        end,
-        stop_callback = function()
-            if temporary_client then
-                temporary_client:move_to_tag(multiple_tag)
-            end
-            temporary_client = nil
-            multiple_tag = nil
+    cycle_stop_callback = function()
+        if temporary_client then
+            temporary_client:move_to_tag(multiple_tag)
+        end
+        temporary_client = nil
+        multiple_tag = nil
 
-            track_focus_time = true
-            update_current_focus_time()
-        end,
-        export_keybindings = true,
-        -- allowed_keys requires the key to be pressed a second time for the
-        -- normal effect of the key to happen which isn't ideal but it's still
-        -- an improvement over not using allowed_keys at all
-        allowed_keys = { "a", "r", "s", "t" },
-    })
+        cycling = false
+        update_current_focus_time()
+    end
 end
 
 clientkeys = gears.table.join(
