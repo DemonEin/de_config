@@ -343,8 +343,10 @@ for _, autocommand in ipairs({
     { "RecordingEnter", "*", function() vim.o.cmdheight = 1 end },
     { "RecordingLeave", "*", function() vim.o.cmdheight = 0 end },
 
-    { "FocusLost", "*", function() vim.cmd("silent wa") end },
-    { "VimSuspend", "*", function() vim.cmd("silent wa") end },
+    -- errors need to be skipped so that there is no error message for buffers
+    -- without a file name
+    { "FocusLost", "*", function() vim.cmd("silent! wa") end },
+    { "VimSuspend", "*", function() vim.cmd("silent! wa") end },
 }) do
     vim.api.nvim_create_autocmd(autocommand[1], {
         pattern = autocommand[2],
