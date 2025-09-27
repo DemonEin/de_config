@@ -265,6 +265,14 @@ globalkeys = gears.table.join(
     ),
     awful.key(
         { modkey },
+        "c",
+        function()
+            client.focus:kill()
+        end,
+        { description = "close", group = "client" }
+    ),
+    awful.key(
+        { modkey },
         "p",
         function()
             spawn_shell({ tag = fullscreen_tag })
@@ -538,15 +546,6 @@ do
     end
 end
 
-clientkeys = gears.table.join(
-    awful.key(
-        { modkey },
-        "c",
-        function(c) c:kill() end,
-        { description = "close", group = "client" }
-    )
-)
-
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
@@ -637,7 +636,6 @@ awful.rules.rules = {
         properties = {
             focus = awful.client.focus.filter,
             raise = true,
-            keys = clientkeys,
             buttons = clientbuttons,
             screen = awful.screen.preferred,
             placement = awful.placement.no_overlap+awful.placement.no_offscreen,
