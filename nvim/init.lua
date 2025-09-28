@@ -9,6 +9,7 @@ vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 
 require("telescope").load_extension("fzf")
 require("oil").setup({
+    cleanup_delay_ms = false,
     keymaps = {
         ["g?"] = { "actions.show_help", mode = "n" },
         ["<CR>"] = "actions.select",
