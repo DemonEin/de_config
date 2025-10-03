@@ -40,6 +40,12 @@ alias clip="xclip -selection c"
 alias down="cd ~/Downloads"
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
+alias battery='cat /sys/class/power_supply/BAT1/capacity'
+
+# TODO incorporate max_brightness to scale nicely
+brightness() {
+    echo $1 | sudo tee '/sys/class/backlight/intel_backlight/brightness' > /dev/null
+}
 
 TASK_DIR="$HOME/tasks"
 
