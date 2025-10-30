@@ -27,7 +27,7 @@ alias gl="git log --pretty=format:'%C(yellow)%h%C(auto) • %an • %cr%d%+s%n'"
 alias gb="git branch"
 alias gsw="git switch"
 
-alias wip="git commit -a -m wip"
+alias wip="git commit --no-verify -a -m wip"
 # I could make this check whether the previous commit has the message "wip"
 alias uwip="git reset HEAD~"
 # I don't know why alias s="nvim \"+'0\"" doesn't work on WSL,
