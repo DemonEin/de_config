@@ -41,6 +41,7 @@ alias down="cd ~/Downloads"
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
 alias battery='cat /sys/class/power_supply/BAT1/capacity'
+alias objdump='objdump -M intel'
 
 # TODO incorporate max_brightness to scale nicely
 brightness() {
