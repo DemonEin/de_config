@@ -66,31 +66,31 @@ gitsigns.setup({
 
 require("lsp-config")
 
-require("nvim-treesitter.configs").setup({
-    ensure_installed = {
-        "c",
-        "cpp",
-        "bash",
-        "make",
-        "rust",
-        "verilog",
-        "python",
-        "lua",
-        "vimdoc",
-        "markdown",
-        "brightscript",
-    },
-    highlight = {
-        enable = true,
-        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-        -- Using this option may slow down your editor, and you may see some duplicate highlights.
-        -- Instead of true it can also be a list of languages
-        additional_vim_regex_highlighting = false,
-    },
-    indent = {
-        enable = true,
-    },
+local treesitter_languages = {
+    "c",
+    "cpp",
+    "bash",
+    "make",
+    "rust",
+    "verilog",
+    "python",
+    "lua",
+    "vimdoc",
+    "markdown",
+    "brightscript",
+}
+require("nvim-treesitter").install(treesitter_languages)
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = treesitter_languages,
+    callback = function()
+        vim.treesitter.start() -- syntax highlighting, provided by Neovim
+
+        -- folds, provided by Neovim
+        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.wo.foldmethod = "expr"
+
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" -- indentation, provided by nvim-treesitter
+    end,
 })
 
 vim.filetype.add({

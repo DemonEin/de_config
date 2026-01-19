@@ -37,13 +37,17 @@ require("lazy").setup({
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         { 
             "nvim-telescope/telescope.nvim",
-            branch = "0.1.x",
+            version = "*",
             dependencies = { "nvim-lua/plenary.nvim" },
         },
         { "catppuccin/nvim", name = "catppuccin" },
         { "lewis6991/gitsigns.nvim" },
         { "tpope/vim-fugitive" },
-        { "nvim-treesitter/nvim-treesitter" },
+        {
+            "nvim-treesitter/nvim-treesitter",
+            lazy = false,
+            build = ":TSUpdate",
+        },
         { "nvim-treesitter/nvim-treesitter-context" },
         {
             "stevearc/oil.nvim",
