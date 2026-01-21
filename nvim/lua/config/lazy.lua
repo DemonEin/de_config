@@ -42,7 +42,7 @@ require("lazy").setup({
                 { "nvim-tree/nvim-web-devicons" },
             },
         },
-        { "catppuccin/nvim", name = "catppuccin" },
+        { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
         { "lewis6991/gitsigns.nvim" },
         { "tpope/vim-fugitive" },
         {
