@@ -39,6 +39,7 @@ require("lazy").setup({
             dependencies = {
                 "nvim-lua/plenary.nvim",
                 { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+                { "nvim-tree/nvim-web-devicons" },
             },
         },
         { "catppuccin/nvim", name = "catppuccin" },
@@ -52,12 +53,11 @@ require("lazy").setup({
         { "nvim-treesitter/nvim-treesitter-context" },
         {
             "stevearc/oil.nvim",
-            dependencies = { { "echasnovski/mini.icons", {} } },
+            dependencies = { { "nvim-tree/nvim-web-devicons" } },
             -- Lazy loading is not recommended because it is very tricky to make
             -- it work correctly in all situations.
             lazy = false,
         },
-        { "nvim-tree/nvim-web-devicons" },
     },
     -- Configure any other settings here. See the documentation for more details.
     -- colorscheme that will be used when installing plugins.
