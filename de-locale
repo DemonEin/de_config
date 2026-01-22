@@ -2,6 +2,8 @@ comment_char %
 escape_char /
 
 % Locale for English locale in the USA
+% In vim, use :set ft=fdcc for syntax highlighting
+% see man 5 locale for the format of this file
 
 LC_IDENTIFICATION
 title      "Custom English Locale"
@@ -82,7 +84,9 @@ day	"Sunday";/
 	"Friday";/
 	"Saturday"
 
-week 7;19971130;1
+week 7;19971130;4
+first_weekday 2
+first_workday 2
 abmon	"Jan";"Feb";/
 	"Mar";"Apr";/
 	"May";"Jun";/
@@ -102,13 +106,13 @@ mon	"January";/
 	"November";/
 	"December"
 % Appropriate date and time representation (%c)
-d_t_fmt "%a %d %b %Y %r %Z"
+d_t_fmt "%A %Y-%m-%d %R"
 %
 % Appropriate date representation (%x)
-d_fmt   "%m//%d//%Y"
+d_fmt   "%A %Y-%m-%d"
 %
 % Appropriate time representation (%X)
-t_fmt   "%r"
+t_fmt   "%R"
 %
 % Appropriate AM/PM time representation (%r)
 t_fmt_ampm "%I:%M:%S %p"
@@ -117,7 +121,7 @@ t_fmt_ampm "%I:%M:%S %p"
 % different from d_t_fmt for historical reasons and has been different
 % since 2000 when date_fmt was added as a GNU extension.  At the end
 % of 2018 it was adjusted to use 12H time (bug 24046) instead of 24H.
-date_fmt "%a %b %e %r %Z %Y"
+date_fmt "%A %Y-%m-%d %R"
 %
 % Strings for AM/PM
 %
@@ -132,8 +136,8 @@ nostr   "no"
 END LC_MESSAGES
 
 LC_PAPER
-height   279
-width    216
+height   297
+width    210
 END LC_PAPER
 
 LC_NAME
@@ -161,13 +165,13 @@ lang_lib    "eng"
 END LC_ADDRESS
 
 LC_TELEPHONE
-tel_int_fmt    "+%c (%a) %l"
-tel_dom_fmt    "(%a) %l"
+tel_int_fmt    "+%c %a-%l"
+tel_dom_fmt    "%a-%l"
 int_select     "11"
 int_prefix     "1"
 END LC_TELEPHONE
 
 LC_MEASUREMENT
-% US customary units.
-measurement 2
+% Metric
+measurement 1
 END LC_MEASUREMENT
