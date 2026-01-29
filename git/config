@@ -12,6 +12,10 @@
 	tool = nvimdiff
     renames = true
     interHunkContext = 10
+[format]
+    # pretty = %C(yellow)%h%C(auto) • %an • %cr • %cs%d%+s%n
+    pretty = %C(yellow)%h%C(auto) • %an • %cr • %cs%d%+s%w(0,4,4)%+b
+    # pretty = %b
 [init]
     defaultBranch = main
 [merge]
