@@ -23,7 +23,7 @@ alias gd="git diff --output-indicator-new=' ' --output-indicator-old=' '"
 alias gc="git commit"
 alias gp="git push"
 alias gu="git pull"
-alias gl="git log --pretty=format:'%C(yellow)%h%C(auto) • %an • %cr • %cs%d%+s%n'"
+alias gl="git log --pretty=custom-short"
 alias gb="git branch"
 alias gsw="git switch"
 
