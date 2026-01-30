@@ -16,7 +16,7 @@
     pretty = custom-medium
     [pretty]
         custom-short = %C(yellow)%h%C(auto) • %an • %cr • %cs%d%+s%n
-        custom-medium = %C(yellow)%h%C(auto) • %an • %cr • %cs%d%+s%n%w(0,4,4)%+b
+        custom-medium = %C(yellow)%h%C(auto) • %an • %cr • %cs%d%+s%n%w(0,4,4)%+b%-C()%n
 [init]
     defaultBranch = main
 [merge]
