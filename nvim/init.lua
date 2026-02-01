@@ -78,6 +78,7 @@ local treesitter_languages = {
     "vimdoc",
     "markdown",
     "brightscript",
+    "typst",
 }
 require("nvim-treesitter").install(treesitter_languages)
 vim.api.nvim_create_autocmd("FileType", {
