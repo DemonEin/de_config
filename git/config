@@ -1,6 +1,8 @@
 [advice]
     addEmptyPathspec = false
     statusHints = false
+[blame]
+    date = short
 [branch]
     sort = -committerdate
 [color "decorate"]
