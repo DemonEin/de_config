@@ -13,7 +13,7 @@ clear_pacman_cache() {
 }
 
 if command -v paru; then
-    paru -Syu --combinedupgrade --removemake
+    paru -Syu --combinedupgrade --removemake --color always
     clear_pacman_cache
 elif command -v pacman; then
     sudo pacman -Syu --noconfirm
