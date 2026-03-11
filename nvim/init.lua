@@ -300,6 +300,7 @@ for _, map in ipairs({
 
         vim.cmd.colorscheme(colorschemes[next_scheme_index])
     end },
+    { "<Leader>d", function() vim.cmd.edit({ vim.fn.expand("%:p:h") }) end },
     { "<Leader>D", vim.lsp.buf.type_definition },
     { "<Leader>hp", gitsigns.preview_hunk },
     { "<Leader>hb", function() gitsigns.blame_line({ full = true }) end },
