@@ -7,7 +7,21 @@ end })
 
 vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 
-require("telescope").load_extension("fzf")
+local telescope = require("telescope")
+local telescope_actions = require("telescope.actions")
+
+telescope.load_extension("fzf")
+telescope.setup({
+    defaults = {
+        mappings = {
+            i = {
+                ["<Esc>"] = telescope_actions.close,
+            }
+        }
+    }
+
+})
+
 require("oil").setup({
     cleanup_delay_ms = false,
     keymaps = {
@@ -156,7 +170,6 @@ vim.diagnostic.config({
     signs = false,
 })
 
-local telescope_actions = require("telescope.actions")
 local telescope_action_state = require("telescope.actions.state")
 
 local telescope_pickers = require("telescope.pickers")
