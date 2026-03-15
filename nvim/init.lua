@@ -219,7 +219,7 @@ for _, map in ipairs({
     { "<C-t>", pick_directory },
     { "<C-n>", ":silent cn<cr>" },
     { "<C-e>", ":silent cp<cr>" },
-    { "<C-c>", function() 
+    { "<C-c>", function()
         vim.o.termguicolors = not vim.o.termguicolors
         if vim.o.termguicolors then
             print("enabled terminal gui colors")
@@ -253,6 +253,12 @@ for _, map in ipairs({
     { "<Leader>f", vim.lsp.buf.format },
     { "<Leader>b", ":Git blame<cr>" },
     { "<Leader>j", "!$jq<cr>" },
+    { "<Leader>a", function()
+        telescope_builtin.buffers({
+            ignore_current_buffer = true,
+            sort_mru = true,
+        })
+    end },
     { "<Leader>r", ":grep '\\b(<C-r><C-w>)\\b'<cr>" },
     { "<Leader>t", function() -- run t.sh
         terminal_command = "te de; shopt -s expand_aliases; . t.sh"
