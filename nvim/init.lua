@@ -75,7 +75,6 @@ local treesitter_languages = {
     "bash",
     "make",
     "rust",
-    "verilog",
     "python",
     "lua",
     "vimdoc",
