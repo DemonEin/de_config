@@ -1,10 +1,14 @@
 local M = {}
 
 local system = function(...)
-    local system_object = vim.system({ ... }, { text = true })
+    local args = { ... }
+    local system_object = vim.system(args, { text = true })
     return function()
         local result = system_object:wait(5000)
-        assert(result.code == 0, result.stderr)
+        assert(
+            result.code == 0,
+            string.format("error with command %s: %s", table.concat(args, " "), result.stderr)
+        )
         return result.stdout
     end
 end
@@ -38,14 +42,22 @@ end
 -- returns the commit that added the current line, the path to the file it was
 -- added on, and the original line number
 local current_line_commit = function()
+    local buffer_name = vim.api.nvim_buf_get_name(0)
+    local file, revision = buffer_name:match("^([^:]+):([^:]+)$")
+    file = file or buffer_name
+
     local current_line = tostring(vim.fn.line("."))
-    local out = system("git",
+    local command = {
+        "git",
         "blame",
         "-n",
         "-f",
         "-L" .. current_line .. "," .. current_line,
-        vim.api.nvim_buf_get_name(0)
-    )()
+        revision
+    }
+    table.insert(command, file)
+
+    local out = system(unpack(command))()
     return out:match("(%S+)%s+(%S+)%s+(%S+)")
 end
 
@@ -96,7 +108,7 @@ M.show_commit = function(revision, path, line_number)
     after = after()
 
     local make_buffer = function(content, revision)
-        return make_buffer_with_content(revision .. ":" .. path, content, {
+        return make_buffer_with_content(path .. ":" .. revision, content, {
             set_filetype = true,
             filename = path,
         })
@@ -123,8 +135,8 @@ M.show_commit = function(revision, path, line_number)
 end
 
 M.show_current_line_commit = function()
-    local revision, path, line_number = current_line_commit()
-    M.show_commit(revision, path, line_number)
+    local change_revision, path, line_number = current_line_commit()
+    M.show_commit(change_revision, path, line_number)
 end
 
 return M
