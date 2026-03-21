@@ -237,7 +237,7 @@ M.show_commit = function(revision, path, line_number)
     assert(current_file_index)
 
     local description_buffer = make_buffer_with_content(revision, description)
-    local files_buffer = make_buffer_with_content(revision .. ":FILES", files) -- TODO adjust name
+    local files_buffer = make_buffer_with_content("FILES:" .. revision, files) -- TODO adjust name
     vim.bo[description_buffer].filetype = "git"
 
     vim.cmd("tab sbuffer " .. description_buffer)
