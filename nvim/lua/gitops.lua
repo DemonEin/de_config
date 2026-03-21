@@ -108,14 +108,17 @@ local make_buffer_with_content = function(name, content, opts)
         lines = vim.split(content, "\n")
     elseif type(content) == "table" then
         lines = content
-    else
+    elseif content ~= nil then
         error("invalid type for content")
     end
-    -- trailing newline does not mean a new line in the output, so remove it
-    if lines[#lines] == "" then
-        lines[#lines] = nil
+
+    if lines then
+        -- trailing newline does not mean a new line in the output, so remove it
+        if lines[#lines] == "" then
+            lines[#lines] = nil
+        end
+        vim.api.nvim_buf_set_lines(buffer, 0, -1, true, lines)
     end
-    vim.api.nvim_buf_set_lines(buffer, 0, -1, true, lines)
 
     if opts.filename then
         vim.bo[buffer].filetype = assert(vim.filetype.match({
@@ -157,9 +160,22 @@ local tabpage_go_to_file_at_index = function(tabdata, file_index)
 
     if tabdata.buffers[file] == nil then
         -- TODO make setting the content on the buffer async
-        local before_contents_wait = get_file_contents(tabdata.before_revision, file)
         local after_contents_wait = get_file_contents(tabdata.after_revision, file)
-        local before_buffer = make_buffer(file, before_contents_wait(), tabdata.before_revision)
+
+        local before_revision_path = tabdata.before_revision .. ":" .. file
+        local before_data = vim.system({"git", "show", before_revision_path }, { text = true }):wait()
+        local before_buffer_contents
+        if before_data.code == 0 then
+            before_buffer_contents = before_data.stdout
+        else
+            if before_data.stderr:find("path%s+'" .. file .. "'%s+exists%s+on%s+disk,%s+but%s+not%s+in%s+'" .. tabdata.before_revision .. "'") then
+                -- before_buffer_contents = nil
+            else
+                error(string.format("git show \"%s\" failed with %s", before_revision_path, before_data.stderr))
+            end
+        end
+        local before_buffer = make_buffer(file, before_data.stdout, tabdata.before_revision)
+
         local after_buffer = make_buffer(file, after_contents_wait(), tabdata.after_revision)
         tabdata.buffers[file] = { before = before_buffer, after = after_buffer }
     end
