@@ -81,6 +81,8 @@ gitsigns.setup({
     end
 })
 
+local gitops = require("gitops")
+
 require("lsp-config")
 
 local treesitter_languages = {
@@ -264,7 +266,7 @@ for _, map in ipairs({
     { "<Leader>wa", vim.lsp.buf.add_workspace_folder },
     { "<Leader>wr", vim.lsp.buf.remove_workspace_folder },
     { "<Leader>f", vim.lsp.buf.format },
-    { "<Leader>b", ":Git blame<cr>" },
+    { "<Leader>b", gitops.show_current_line_commit },
     { "<Leader>j", "!$jq<cr>" },
     { "<Leader>a", function()
         telescope_builtin.buffers({
