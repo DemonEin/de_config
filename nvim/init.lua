@@ -152,6 +152,7 @@ vim.o.diffopt = "internal,filler,closeoff,linematch:40,foldcolumn:0,vertical"
 vim.o.expandtab = true
 vim.o.fillchars = "diff: "
 vim.o.foldlevel = 9999
+vim.o.fsync = false
 vim.o.hlsearch = false
 vim.o.number = true
 vim.o.relativenumber = true
