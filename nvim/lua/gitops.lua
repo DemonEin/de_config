@@ -76,6 +76,7 @@ end
 -- returns the commit that added the current line, the path to the file it was
 -- added on, and the original line number
 local current_line_commit = function()
+    vim.cmd.write()
     local buffer_name = vim.api.nvim_buf_get_name(0)
     local file, revision = buffer_name:match("^([^:]+):([^:]+)$")
     file = file or buffer_name
