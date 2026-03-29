@@ -354,6 +354,14 @@ end
 vim.keymap.set("ca", "H", "vert h")
 vim.keymap.set({ "n", "v" }, "<Leader>b", gitops.show_current_line_commit)
 
+vim.api.nvim_create_user_command(
+    "View",
+    function(args)
+        gitops.show_commit(args.args)
+    end,
+    { nargs = 1 }
+)
+
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
     local char_uppercase = string.char(uppercase_ascii)

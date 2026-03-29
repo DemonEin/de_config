@@ -273,6 +273,11 @@ end
 -- can use gitsigns.show(revision)
 -- can use git show rev:path to get the plain file contents
 -- opens a new tab page with the commit
+-- Shows the given commit, including the description, file list, and diff from its parent
+-- revision is the revision to show.
+-- path, optional, is the file to show. If not provided then an unspecified file changed in the
+-- commit is shown.
+-- line_number, optional, is the line number to jump to after showing the commit.
 M.show_commit = function(revision, path, line_number)
     local before_revision = revision .. "~"
 
@@ -291,11 +296,15 @@ M.show_commit = function(revision, path, line_number)
     end
 
     local current_file_index
-    for index, file in ipairs(files) do
-        if file == path then
-            current_file_index = index
-            break
+    if path then
+        for index, file in ipairs(files) do
+            if file == path then
+                current_file_index = index
+                break
+            end
         end
+    else
+        current_file_index = 1
     end
     assert(current_file_index)
 
