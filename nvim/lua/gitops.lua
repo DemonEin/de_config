@@ -3,6 +3,10 @@ local telescope_finders = require("telescope.finders")
 local telescope_config = require("telescope.config").values
 local telescope_builtin = require("telescope.builtin")
 
+local FILE_BUFFER_SELECTED_HIGHLIGHT = "QuickFixLine"
+local FILE_BUFFER_NOT_SELECTED_HIGHLIGHT = "Normal"
+local HIGHLIGHT_NAMESPACE = vim.api.nvim_create_namespace("gitops")
+
 local M = {}
 
 local tabpage_data = {}
@@ -203,6 +207,7 @@ local tabpage_go_to_file_at_index = function(tabdata, file_index)
     local file = get_tabpage_files(tabdata)[file_index]
     assert(file)
 
+    local previous_file_index = tabdata.current_file_index
     tabdata.current_file_index = file_index
 
     if tabdata.buffers[file] == nil then
@@ -226,6 +231,30 @@ local tabpage_go_to_file_at_index = function(tabdata, file_index)
         local after_buffer = make_buffer(file, after_contents_wait(), tabdata.after_revision)
         tabdata.buffers[file] = { before = before_buffer, after = after_buffer }
     end
+
+    local update_extmark = function(id, hl_group)
+        local position = vim.api.nvim_buf_get_extmark_by_id(
+            tabdata.files_buffer,
+            HIGHLIGHT_NAMESPACE,
+            id,
+            { details = true }
+        )
+        assert(position)
+        vim.api.nvim_buf_set_extmark(
+            tabdata.files_buffer,
+            HIGHLIGHT_NAMESPACE,
+            position[1],
+            position[2],
+            {
+                id = id,
+                end_row = position[3].end_row,
+                end_col= position[3].end_col,
+                hl_group = hl_group,
+            }
+        )
+    end
+    update_extmark(tabdata.file_highlight_extmarks[previous_file_index], FILE_BUFFER_NOT_SELECTED_HIGHLIGHT)
+    update_extmark(tabdata.file_highlight_extmarks[file_index], FILE_BUFFER_SELECTED_HIGHLIGHT)
 
     local buffers = tabdata.buffers[file]
     vim.api.nvim_win_call(tabdata.before_window, function()
@@ -310,6 +339,22 @@ M.show_commit = function(revision, path, line_number)
 
     local description_buffer = make_buffer_with_content(revision, description)
     local files_buffer = make_buffer_with_content("FILES:" .. revision, files) -- TODO adjust name
+    local file_highlight_extmarks = {}
+    for i = 1, #files do
+        local line = i - 1
+        table.insert(file_highlight_extmarks, vim.api.nvim_buf_set_extmark(
+            files_buffer,
+            HIGHLIGHT_NAMESPACE,
+            line,
+            0, -- column
+            {
+                end_row = line,
+                end_col = #vim.api.nvim_buf_get_lines(files_buffer, line, line + 1, true)[1],
+                hl_group = FILE_BUFFER_NOT_SELECTED_HIGHLIGHT,
+            }
+        ))
+    end
+
     vim.bo[description_buffer].filetype = "git"
 
     vim.cmd("tab sbuffer " .. description_buffer)
@@ -340,6 +385,7 @@ M.show_commit = function(revision, path, line_number)
         current_file_index = current_file_index,
         after_revision = revision,
         before_revision = before_revision,
+        file_highlight_extmarks = file_highlight_extmarks,
         -- files (strings) are keys, values are tables like { before: buffer_id, after: buffer_id }
         buffers = {},
     }
