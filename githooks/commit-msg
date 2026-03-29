@@ -4,8 +4,8 @@
 
 LIMIT=72
 
-# if test ${#SUMMARY} '>' $LIMIT; then
-if ! rg -q --multiline "\\A.{1,$LIMIT}\\n\\n" "$1"; then
+# the # is needed at the end because there can be comment lines
+if ! rg -q --multiline "\\A.{1,$LIMIT}\\n(\\n|\\z|#)" "$1"; then
     cp "$1" /tmp/badcommit
     echo "Error: summary line longer than $LIMIT characters or missing empty line after summary line"
     echo "bad commit message written to /tmp/badcommit"
