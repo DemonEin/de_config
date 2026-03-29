@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# taken with modifications from the sample pre-commit hook
+
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+	against=HEAD
+else
+	# Initial commit: diff against an empty tree object
+	against=$(git hash-object -t tree /dev/null)
+fi
+
+exec 1>&2
+
+# Cross platform projects tend to avoid non-ASCII filenames; prevent
+# them from being added to the repository. We exploit the fact that the
+# printable range starts at the space character and ends with tilde.
+if
+	test $(git diff --cached --name-only --diff-filter=A -z $against |
+        LC_ALL=C tr -d '[ -~]\0' | wc -c) '!=' 0
+then
+    echo 'Error: Attempt to add a non-printable ASCII file name.'
+	exit 1
+fi
+
+# this checks for whitespace errors
+exec git diff-index --check --cached $against --

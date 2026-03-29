@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# parameter 1 contains the path to the commit message file
+
+LIMIT=72
+
+# if test ${#SUMMARY} '>' $LIMIT; then
+if ! rg -q --multiline "\\A.{1,$LIMIT}\\n\\n" "$1"; then
+    cp "$1" /tmp/badcommit
+    echo "Error: summary line longer than $LIMIT characters or missing empty line after summary line"
+    echo "bad commit message written to /tmp/badcommit"
+    exit 1
+fi
+
+TMPFILE=$(mktemp)
+fmt -s -w $LIMIT "$1" > "$TMPFILE"
+cp "$TMPFILE" "$1"
+rm "$TMPFILE"

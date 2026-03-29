@@ -33,6 +33,7 @@
     cmd = nvim -d $LOCAL $MERGED $REMOTE -c 'execute \"normal \\<C-W>\\<Right>\"'
 [core]
 	editor = nvim
+    hooksPath = ~/de_config/githooks
 [submodule]
 	recurse = true
 	fetchJobs = 0
