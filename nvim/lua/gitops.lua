@@ -260,11 +260,14 @@ M.show_commit = function(revision, path, line_number)
     vim.cmd("tab sbuffer " .. description_buffer)
     local description_window = vim.api.nvim_get_current_win()
     local window_height = vim.api.nvim_win_get_height(0)
+
+    local description_files_height = math.max(vim.api.nvim_buf_line_count(description_buffer), vim.api.nvim_buf_line_count(files_buffer)) + 1
+    local upper_height = math.min(description_files_height, window_height / 3)
+    local height = math.floor(window_height - upper_height + 0.5)
+
     local before_window = vim.api.nvim_open_win(0, true, {
         split = "below",
-        height = window_height - math.min(
-            math.max(vim.api.nvim_buf_line_count(description_buffer), vim.api.nvim_buf_line_count(files_buffer)) + 1
-        , window_height / 3),
+        height = height,
     })
     local after_window = vim.api.nvim_open_win(0, true, { split = "right" })
 
