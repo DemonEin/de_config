@@ -78,7 +78,10 @@ end
 -- in visual mode, returns that information for the commit that most recently modified the selected
 -- lines
 local current_line_commit = function()
-    vim.cmd.write()
+    if not vim.bo.buftype then
+        vim.cmd.write()
+    end
+
     local buffer_name = vim.api.nvim_buf_get_name(0)
     local file, revision = buffer_name:match("^([^:]+):([^:]+)$")
     file = file or buffer_name
