@@ -220,6 +220,11 @@ pick_directory = function(opts)
     }):find()
 end
 
+-- needs to be global so it can be called on startup (see awesome rc.lua)
+pick_file = function()
+    telescope_builtin.find_files()
+end
+
 -- normal mode keymaps
 for _, map in ipairs({
     { "^", "^9999zh" },

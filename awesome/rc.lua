@@ -77,7 +77,8 @@ local spawn_editor = function(properties, directory)
     else
         table.insert(command, "nvim")
         if directory then
-            table.insert(command, directory)
+            table.insert(command, "-c")
+            table.insert(command, "lua pick_file()")
         else
             table.insert(command, "-c")
             table.insert(command, "lua pick_directory()")
