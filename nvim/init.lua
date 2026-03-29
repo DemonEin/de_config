@@ -162,6 +162,7 @@ vim.o.softtabstop = 4
 vim.o.spelllang = "en_us"
 vim.o.splitright = true
 vim.o.tabstop = 4
+vim.o.textwidth = 100 -- use this as a default for all files
 vim.o.tildeop = true
 vim.o.updatetime = 100
 vim.o.wrap = false
@@ -266,7 +267,11 @@ for _, map in ipairs({
     end },
     { "<Leader>wa", vim.lsp.buf.add_workspace_folder },
     { "<Leader>wr", vim.lsp.buf.remove_workspace_folder },
-    { "<Leader>f", vim.lsp.buf.format },
+    { "<Leader>f", function()
+        local view = vim.fn.winsaveview()
+        vim.cmd("keepjumps normal! gggqG")
+        vim.fn.winrestview(view)
+    end },
     { "<Leader>b", gitops.show_current_line_commit },
     { "<Leader>j", "!$jq<cr>" },
     { "<Leader>a", function()
@@ -366,6 +371,12 @@ for _, autocommand in ipairs({
     end },
 
     { "FileType", "gitcommit,text,markdown", function() vim.o.spell = true end },
+
+    -- many ftplugins set these but I don't want them
+    { "FileType", "*", function()
+        vim.opt.formatoptions:remove("r")
+        vim.opt.formatoptions:remove("o")
+    end },
 
     { "RecordingEnter", "*", function() vim.o.cmdheight = 1 end },
     { "RecordingLeave", "*", function() vim.o.cmdheight = 0 end },
