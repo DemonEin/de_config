@@ -65,9 +65,21 @@ local is_shell = function(c)
     return c.class == "Shell"
 end
 
-local spawn_editor = function(properties)
-    awful.spawn("kitty --class Editor "
-        .. (os.getenv("EDITOR") or "nvim -c 'lua pick_directory()'"), properties)
+local spawn_editor = function(properties, directory)
+    local command = { "kitty", "--class", "Editor" }
+    if directory then
+        table.insert(command, "--directory")
+        table.insert(command, directory)
+    end
+    local editor = os.getenv("EDITOR")
+    if editor then
+        table.insert(command, editor)
+    else
+        table.insert(command, "nvim")
+        table.insert(command, "-c")
+        table.insert(command, "lua pick_directory()")
+    end
+    awful.spawn(command, properties)
 end
 local is_editor = function(c)
     return c.class == "Editor"
@@ -148,6 +160,11 @@ local fullscreen_tag = awful.tag.add("fullscreen", {
     layout = awful.layout.suit.max,
 })
 fullscreen_tag:view_only()
+
+launch_editor_in_directory = function(directory)
+    spawn_editor({ tag = fullscreen_tag }, directory)
+    fullscreen_tag:view_only()
+end
 
 awful.screen.connect_for_each_screen(function(s)
     set_wallpaper()

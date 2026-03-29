@@ -37,6 +37,9 @@ gview() {
 alias wip="git commit --no-verify -a -m wip"
 # I could make this check whether the previous commit has the message "wip"
 alias uwip="git reset HEAD~"
+e() {
+    awesome-client "launch_editor_in_directory('$(pwd)')"
+}
 # I don't know why alias s="nvim \"+'0\"" doesn't work on WSL,
 # it does on normal ubuntu
 alias s="if jobs nvim &> /dev/null; then fg nvim; else nvim \"+:norm'0\"; fi"
