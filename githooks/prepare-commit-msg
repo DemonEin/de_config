@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# parameter 1 is a file containing the commit message to open
+# parameter 2 is where the commit message came from
+
+if test "$2" '!=' message && test -f /tmp/badcommit; then
+    cp /tmp/badcommit "$1"
+fi

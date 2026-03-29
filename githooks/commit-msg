@@ -16,3 +16,4 @@ TMPFILE=$(mktemp)
 fmt -s -w $LIMIT "$1" > "$TMPFILE"
 cp "$TMPFILE" "$1"
 rm "$TMPFILE"
+rm -f /tmp/badcommit # /tmp/badcommit must be removed so that later commits don't use it as a message template
