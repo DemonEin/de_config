@@ -267,7 +267,9 @@ globalkeys = gears.table.join(
         { modkey },
         "c",
         function()
-            client.focus:kill()
+            if client.focus then
+                client.focus:kill()
+            end
         end,
         { description = "close", group = "client" }
     ),
