@@ -26,6 +26,13 @@ alias gu="git pull"
 alias gl="git log --pretty=custom-short"
 alias gb="git branch"
 alias gsw="git switch"
+gview() {
+    if test -z "$1"; then
+        echo 'Error: did not supply refspec' >&2
+        return 1
+    fi
+    nvim -c "View $1"
+}
 
 alias wip="git commit --no-verify -a -m wip"
 # I could make this check whether the previous commit has the message "wip"
