@@ -75,6 +75,8 @@ end
 
 -- returns the commit that added the current line, the path to the file it was
 -- added on, and the original line number
+-- in visual mode, returns that information for the commit that most recently modified the selected
+-- lines
 local current_line_commit = function()
     vim.cmd.write()
     local buffer_name = vim.api.nvim_buf_get_name(0)
@@ -82,18 +84,59 @@ local current_line_commit = function()
     file = file or buffer_name
 
     local current_line = tostring(vim.fn.line("."))
+    local end_of_visual_selection = tostring(vim.fn.line("v"))
     local command = {
         "git",
         "blame",
+        "--porcelain",
         "-n",
         "-f",
-        "-L" .. current_line .. "," .. current_line,
+        "-L" .. current_line .. "," .. end_of_visual_selection,
         revision
     }
     table.insert(command, file)
 
     local out = system(unpack(command))()
-    return out:match("(%S+)%s+(%S+)%s+(%S+)")
+
+    local commits = {}
+    for commit in out:gmatch("(" .. string.rep("%S", 40) .. ")%s+%d+%s+%d+%s+%d\nauthor") do
+        table.insert(commits, commit)
+    end
+    assert(#commits > 0)
+    local committer_times = {}
+    for committer_time in out:gmatch("\ncommitter%-time%s+(%d+)") do
+        table.insert(committer_times, committer_time)
+    end
+    assert(#commits == #committer_times)
+    local original_filenames = {}
+    for filename in out:gmatch("\nfilename%s+(%S[^\n]+)") do
+        table.insert(original_filenames, filename)
+    end
+    assert(#commits == #original_filenames)
+
+    local max_time = tonumber(committer_times[1])
+    local max_index = 1
+    for index, time in ipairs(committer_times) do
+        time = tonumber(time)
+        if time > max_time then
+            max_time = time
+            max_index = index
+        end
+    end
+
+    local commit = commits[max_index]
+
+    -- get any original line number in the blame of the selected commit; this happens to get the
+    -- first
+    -- there is an unlikely bug here where this pattern could match the actual content of a line
+    local original_line
+    for line in out:gmatch(commit .. "%s+(%d+)%s+%d+") do
+        original_line = line
+        break
+    end
+    assert(original_line)
+
+    return commit, original_filenames[max_index], original_line
 end
 
 -- all buffers that should have the special keymaps must be created by this function

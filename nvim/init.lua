@@ -272,7 +272,7 @@ for _, map in ipairs({
         vim.cmd("keepjumps normal! gggqG")
         vim.fn.winrestview(view)
     end },
-    { "<Leader>b", gitops.show_current_line_commit },
+    -- see below for <Leader>b mapping
     { "<Leader>j", "!$jq<cr>" },
     { "<Leader>a", function()
         telescope_builtin.buffers({
@@ -352,6 +352,7 @@ for _, map in ipairs({
 end
 
 vim.keymap.set("ca", "H", "vert h")
+vim.keymap.set({ "n", "v" }, "<Leader>b", gitops.show_current_line_commit)
 
 -- make all marks global marks (and the same capital and lowercase)
 for uppercase_ascii=65,90 do
