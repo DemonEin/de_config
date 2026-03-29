@@ -59,14 +59,14 @@ end
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 local spawn_shell = function(properties)
-    awful.spawn("kitty --class Shell", properties)
+    awful.spawn("kitty --single-instance --class Shell", properties)
 end
 local is_shell = function(c)
     return c.class == "Shell"
 end
 
 local spawn_editor = function(properties, directory)
-    local command = { "kitty", "--class", "Editor" }
+    local command = { "kitty", "--single-instance", "--class", "Editor" }
     if directory then
         table.insert(command, "--directory")
         table.insert(command, directory)
@@ -76,8 +76,12 @@ local spawn_editor = function(properties, directory)
         table.insert(command, editor)
     else
         table.insert(command, "nvim")
-        table.insert(command, "-c")
-        table.insert(command, "lua pick_directory()")
+        if directory then
+            table.insert(command, directory)
+        else
+            table.insert(command, "-c")
+            table.insert(command, "lua pick_directory()")
+        end
     end
     awful.spawn(command, properties)
 end
