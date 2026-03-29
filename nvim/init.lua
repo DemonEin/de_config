@@ -222,6 +222,7 @@ end
 
 -- normal mode keymaps
 for _, map in ipairs({
+    { "^", "^9999zh" },
     { "gr", vim.lsp.buf.references },
     { "gi", vim.lsp.buf.implementation },
     { "gd", vim.lsp.buf.definition },
