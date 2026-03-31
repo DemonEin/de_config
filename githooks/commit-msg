@@ -4,16 +4,14 @@
 
 LIMIT=72
 
-# the # is needed at the end because there can be comment lines
-if ! rg -q --multiline "\\A.{1,$LIMIT}\\n(\\n|\\z|#)" "$1"; then
-    cp "$1" /tmp/badcommit
+MESSAGE=$(cat "$1" | rg -v '^#')
+
+if ! echo "$MESSAGE" | rg -q --multiline "\\A.{1,$LIMIT}\\n(\\n|\\z)"; then
+    echo "$MESSAGE" > /tmp/badcommit
     echo "Error: summary line longer than $LIMIT characters or missing empty line after summary line"
     echo "bad commit message written to /tmp/badcommit"
     exit 1
 fi
 
-TMPFILE=$(mktemp)
-fmt -s -w $LIMIT "$1" > "$TMPFILE"
-cp "$TMPFILE" "$1"
-rm "$TMPFILE"
+echo "$MESSAGE" | fmt -s -w $LIMIT > "$1"
 rm -f /tmp/badcommit # /tmp/badcommit must be removed so that later commits don't use it as a message template
