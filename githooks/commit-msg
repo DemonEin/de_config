@@ -8,8 +8,8 @@ MESSAGE=$(cat "$1" | rg -v '^#')
 
 if ! echo "$MESSAGE" | rg -q --multiline "\\A.{1,$LIMIT}\\n(\\n|\\z)"; then
     echo "$MESSAGE" > /tmp/badcommit
-    echo "Error: summary line longer than $LIMIT characters or missing empty line after summary line"
-    echo "bad commit message written to /tmp/badcommit"
+    echo "Error: summary line longer than $LIMIT characters or missing empty line after summary line" >&2
+    echo "bad commit message written to /tmp/badcommit" >&2
     exit 1
 fi
 
