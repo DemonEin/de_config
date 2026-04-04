@@ -183,14 +183,36 @@ statusline = function()
     local git_head = vim.b[buffer_id].gitsigns_head
     local git_head_component = ""
     if git_head then
-        git_head_component = "%#Normal#::" .. "%#GitBranch#" .. escape(git_head)
+        git_head_component = "%#Normal#::" .. "%#GitBranch#" .. escape(git_head) .. "%#Normal#::"
     end
 
-    -- use %#
-    return "%#Directory#" .. escape(vim.fn.fnamemodify(vim.fn.getcwd(), ":~"))
+    local cwd_component = "%#Directory#" .. escape(vim.fn.fnamemodify(vim.fn.getcwd(), ":~"))
+    if git_head_component == "" then
+        cwd_component = cwd_component .. "/"
+    end
+
+    local buffer_name = vim.api.nvim_buf_get_name(buffer_id)
+
+    local file_path_absolute
+    local oil_base = buffer_name:match("^oil://(.*)")
+    if oil_base then
+        file_path_absolute = oil_base
+    else
+        file_path_absolute = vim.fn.fnamemodify(buffer_name, ":~")
+    end
+
+    local file_path_short = vim.fn.fnamemodify(file_path_absolute, ":.")
+    local file_component
+    if vim.fs.normalize(file_path_short) == vim.fs.normalize(cwd_component) then
+        file_component = ""
+    else
+        file_component = "%#Normal#" .. escape(file_path_short)
+    end
+
+    return cwd_component
         .. git_head_component
-        .. "%#Normal#" .. "::" .. escape(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buffer_id), ':~:.'))
-        .. " %r"
+        .. file_component
+        .. " %#Normal#%r"
 end
 
 vim.diagnostic.config({
