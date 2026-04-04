@@ -58,9 +58,11 @@ gitsigns.setup({
     signcolumn = false,
     numhl = true,
 
-    -- copied from gitsigns readme
     on_attach = function(bufnr)
         local gitsigns = require("gitsigns")
+
+        -- so that the current branch is immediately reflected in the status line
+        vim.cmd.redrawstatus()
 
         local function map(mode, l, r, opts)
             opts = opts or {}
@@ -166,6 +168,30 @@ vim.o.textwidth = 100 -- use this as a default for all files
 vim.o.tildeop = true
 vim.o.updatetime = 100
 vim.o.wrap = false
+vim.o.statusline = "%!v:lua.statusline()"
+
+-- must be global to be callable from vimscript
+statusline = function()
+    local window_id = vim.g.statusline_winid
+    local buffer_id = vim.api.nvim_win_get_buf(window_id)
+
+    -- results that contain % must be escaped since % statusline items will be expanded
+    local escape = function(s)
+        return s:gsub("%%", "%%")
+    end
+
+    local git_head = vim.b[buffer_id].gitsigns_head
+    local git_head_component = ""
+    if git_head then
+        git_head_component = "%#Normal#::" .. "%#GitBranch#" .. escape(git_head)
+    end
+
+    -- use %#
+    return "%#Directory#" .. escape(vim.fn.fnamemodify(vim.fn.getcwd(), ":~"))
+        .. git_head_component
+        .. "%#Normal#" .. "::" .. escape(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buffer_id), ':~:.'))
+        .. " %r"
+end
 
 vim.diagnostic.config({
     virtual_text = {
