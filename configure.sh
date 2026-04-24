@@ -23,6 +23,7 @@ ln -T -s $SCRIPT_DIR/awesome ~/.config/awesome
 ln -T -s $SCRIPT_DIR/git ~/.config/git
 ln -T -s $SCRIPT_DIR/kitty ~/.config/kitty
 ln -s $SCRIPT_DIR/alacritty.toml ~/.config/alacritty.toml
+ln -T -s "$SCRIPT_DIR"/clangd ~/.config/clangd
 
 # link the files individually because updates to X11 turn /etc/X11/xorg.conf.d
 # into a directory if it is a symlink
