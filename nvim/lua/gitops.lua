@@ -13,15 +13,20 @@ local tabpage_data = {}
 local next_file -- TODO move definition so I don't need a forward declaration
 local previous_file -- TODO move definition so I don't need a forward declaration
 
--- workaround since TabClosed only provides tab number; does not work --
--- when the order changes, like https://github.com/neovim/neovim/issues/25844
--- but for tabs
-local tab_number_to_tab_id = {}
+local closing_tabpage_id
+
+vim.api.nvim_create_autocmd("TabClosedPre", {
+    callback = function()
+        closing_tabpage_id = vim.api.nvim_get_current_tabpage()
+    end
+})
 
 vim.api.nvim_create_autocmd("TabClosed", {
     callback = function(args)
-        local tab_id = assert(tab_number_to_tab_id[tonumber(args.file)])
-        local tabdata = tabpage_data[tab_id]
+        local tabpage_id = closing_tabpage_id
+        closing_tabpage_id = nil
+
+        local tabdata = tabpage_data[tabpage_id]
         if not tabdata then
             return
         end
@@ -33,7 +38,7 @@ vim.api.nvim_create_autocmd("TabClosed", {
         end
         vim.api.nvim_buf_delete(tabdata.description_buffer, {})
         vim.api.nvim_buf_delete(tabdata.files_buffer, {})
-        tabpage_data[tab_id] = nil
+        tabpage_data[tabpage_id] = nil
     end
 })
 
@@ -391,7 +396,6 @@ M.show_commit = function(revision, path, line_number)
     }
     local tab_id = vim.api.nvim_get_current_tabpage()
     tabpage_data[tab_id] = tabdata
-    tab_number_to_tab_id[vim.fn.tabpagenr()] = tab_id
 
     tabpage_go_to_file_at_index(tabdata, current_file_index)
 
